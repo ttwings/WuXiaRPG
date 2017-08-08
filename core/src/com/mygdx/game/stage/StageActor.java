@@ -1,9 +1,15 @@
 package com.mygdx.game.stage;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.actor.BaseActor;
 import com.mygdx.game.manager.*;
 import com.mygdx.game.tools.LazyBitmapFont;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by apple on 16/12/25.
@@ -15,8 +21,13 @@ public class StageActor extends Stage{
     int x0,y0;
     String[][] stageMat;
     LazyBitmapFont font;
+    Set<String> setName;
+    Map<String,BaseActor> actorMap;
+    int index;
     public StageActor(String name){
-        baseActor = ReadData.actorMap("Data/Actors.txt").get(name);
+        actorMap = ReadData.actorMap("Data/Actors.txt");
+        setName = actorMap.keySet();
+        baseActor = actorMap.get(name);
         init();
         changeMat(baseActor);
     }
@@ -55,24 +66,29 @@ public class StageActor extends Stage{
     @Override
     public boolean keyUp(int keycode) {
         // Reset game world
-        if (keycode == Input.Keys.E) {
-//            Gdx.app.log("StageMain", "按键E测试");
+        if (keycode == Constants.KEY_A) {
+//          简单的随机显示现有人物状态信息的功能
+            index = MathUtils.random(0,actorMap.size()-1);
+            baseActor = actorMap.get(setName.toArray()[index]);
+            changeMat(baseActor);
+
+
         }
-        if (keycode == Input.Keys.D) {
+        if (keycode == Constants.KEY_B) {
 //            Gdx.app.log("StageMain", "按键D测试");
         }
-        if (keycode == Input.Keys.S) {
+        if (keycode == Constants.KEY_X) {
 //            Gdx.app.log("StageMain", "按键S测试");
 //            changeIndex(1);
         }
-        if (keycode == Input.Keys.F) {
+        if (keycode == Constants.KEY_Y) {
 //            Gdx.app.log("StageMain", "按键F测试");
 //            changeIndex(1);
         }
-        if (keycode == Input.Keys.H) {
+        if (keycode == Constants.KEY_START) {
 //            StageManager.getInstance().currentStage = StageMap.getInstance();
         }
-        if (keycode == Input.Keys.P) {
+        if (keycode == Constants.KEY_BACK) {
             StageManager.getInstance().currentStage = StageMap.getInstance();
         }
         // Select next sprite
