@@ -3,13 +3,10 @@ package com.mygdx.game.test;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.action.Attack;
 import com.mygdx.game.action.AttackManager;
-import com.mygdx.game.rpgdata.RpgBuilding;
-
 /**
  * Created by Administrator on 2016/11/10.
  */
 public class Test {
-    static RpgBuilding building = new RpgBuilding(0,0,4,4);
     static Attack attack;
     static AttackManager attackManager =  AttackManager.getInstance();
 
@@ -37,19 +34,7 @@ public class Test {
     }
 
 
-    static void build(){
-        building.createSpace();
-        building.createFloor("木质地板");
-        building.createWall("木墙");
-        building.createDoor("木门",6);
-        for (int i=0;i<building.h;i++){
-            for (int j=0;j<building.w;j++){
-                System.out.print(building.buildMat[i][j]);
-            }
-            System.out.println();
-        }
 
-    }
 
     public static String speak(String sbeak ,String name,int count){
         String s;

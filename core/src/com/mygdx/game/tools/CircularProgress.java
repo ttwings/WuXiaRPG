@@ -135,7 +135,7 @@ public class CircularProgress extends Actor {
         float x = getX();
         float y = getY();
         float fColor = getColor().toFloatBits();
-        int idx = 0;;
+        int idx = 0;
 
         for (int j = 0; j < n - 1; j++) {
             vertices[0 + j * 5] = x + this.vertices[j * 5];

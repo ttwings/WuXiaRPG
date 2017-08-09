@@ -12,7 +12,7 @@ public class Mountain{
 	 * @param num
 	 * @return */
 	float Displace(float num) {
-		float max=(float)num/(width+height)*3f;
+		float max= num /(width+height)*3f;
 		return (float)(Math.random()-0.5f)*max;
 	}
 	/**

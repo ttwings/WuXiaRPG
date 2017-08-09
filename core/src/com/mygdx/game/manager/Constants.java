@@ -3,11 +3,11 @@ package com.mygdx.game.manager;
 import com.badlogic.gdx.Input;
 
 public class Constants {
-    // Visible game world is 5 meters wide
+    // 1280像素宽
     public static final int VIEWPORT_WIDTH = 1280;
-    // Visible game world is 5 meters tall
+    // 800像素高
     public static final int VIEWPORT_HEIGHT = 800;
-//    FPS
+    // FPS 帧数限制
     public static final int FPS = 30;
     // direction
     public static int DIR_N = 8;
@@ -30,8 +30,8 @@ public class Constants {
     public static int KEY_B = Input.Keys.K;
     public static int KEY_X = Input.Keys.I;
     public static int KEY_Y = Input.Keys.L;
-    public static int KEY_BACK = Input.Keys.H;
-    public static int KEY_START = Input.Keys.G;
+    public static int KEY_BACK = Input.Keys.G;
+    public static int KEY_START = Input.Keys.H;
     public static int KEY_L1 = Input.Keys.R;
     public static int KEY_R1 = Input.Keys.U;
     public static int KEY_L2 = Input.Keys.W;

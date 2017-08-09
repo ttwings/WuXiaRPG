@@ -8,7 +8,7 @@ import com.mygdx.game.manager.ReadData
  */
 class TestGroovy{
 //    BaseActor actor = ReadData.actorMap("Data/Actors.txt").get("段誉")
-    BaseActor actor;
+    BaseActor actor
     void printActorName(String s){
         println(actor.name+s)
     }

@@ -3,6 +3,7 @@ package com.mygdx.game.manager;
 /**
  * Created by apple on 16/11/10.
  */
+//动作枚举类
 public enum EnumAction {
     NULL,
     moveU,

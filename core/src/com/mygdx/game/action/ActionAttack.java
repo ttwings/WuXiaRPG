@@ -1,7 +1,6 @@
 package com.mygdx.game.action;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.mygdx.game.actor.BaseActor;
 import com.mygdx.game.manager.AnimationManager;
 import com.mygdx.game.manager.ReadData;
@@ -41,6 +40,8 @@ public class ActionAttack implements GamepadKey {
 	}
 	@Override
 	public void passB(MapLocal mapLocal, BaseActor actor) {
+		attack(mapLocal, actor);
+		actor.addAction(SkillActions.chongFeng(actor,-320,0.5f));
 	}
 	@Override
 	public void passX(MapLocal mapLocal, BaseActor actor) {

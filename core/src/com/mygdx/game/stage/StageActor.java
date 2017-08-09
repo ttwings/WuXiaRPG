@@ -5,9 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.actor.BaseActor;
 import com.mygdx.game.manager.*;
 import com.mygdx.game.tools.LazyBitmapFont;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -71,8 +68,6 @@ public class StageActor extends Stage{
             index = MathUtils.random(0,actorMap.size()-1);
             baseActor = actorMap.get(setName.toArray()[index]);
             changeMat(baseActor);
-
-
         }
         if (keycode == Constants.KEY_B) {
 //            Gdx.app.log("StageMain", "按键D测试");

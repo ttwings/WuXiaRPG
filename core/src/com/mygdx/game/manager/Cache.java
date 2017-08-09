@@ -10,8 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by apple on 16/11/19.
+ * Created by ttwings on 16/11/19.
  */
+// 主要用于纹理的载入
 public class Cache {
     private String TAG = Gdx.app.getClass().getName();
     private Cache(){init();}

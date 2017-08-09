@@ -1,4 +1,5 @@
 package com.mygdx.game.manager;
+
 /**
  * Created by apple on 16/11/19.
  * 游戏中的用语，用来在游戏中显示。语境
@@ -43,8 +44,8 @@ public final class Vocab {
     public static final String ActorAttackStyle = "使出%s[%s]";
     public static final String ActorAttackMax = "使出%s击中要害";
     public static final String ActorAttackMiss = "使出%s,但对方躲开了";
-//    public static final String Attack = "%s使出%s,打在%s身上，造成%d点伤害";
-//    public static final String Attack = "%s使出%s,打在%s身上，造成%d点伤害";
+    //    public static final String Attack = "%s使出%s,打在%s身上，造成%d点伤害";
+    //    public static final String Attack = "%s使出%s,打在%s身上，造成%d点伤害";
     public static final String ActorDamage = "%s受到了%s点的伤害！";
     public static final String ActorRecovery = "%s的%s恢复了%s点！";
     public static final String ActorGain = "%s的%s恢复了%s点！";
@@ -72,29 +73,28 @@ public final class Vocab {
     public static final String BuffRemove = "%s的%s恢复了！";
     // 技能或物品的使用无效时
     public static final String ActionFailure = "对%s无效！";
-//    用与日历类
-    public static final String characters = "看这招降龙十八掌战于野空气土壤草坪沙地雪地绿草地枯草地黄草地雪草地发现建造了小木屋日金木水火土月春夏秋冬鼠牛虎兔龙蛇马羊猴鸡狗猪子丑寅卯辰巳午未申酉戌亥";
+    //    用于日历类
     public static final String CALENDAR = "%s年%s季%2d日%s时%s";
-    public static final String[] SEASONS = {"春","夏","秋","冬"};
-    public static final String[] YEARS = {"鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"};
-    public static final String[] HOURS = {"子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"};
-    public static final String[] WEEKDAYS = {"日","金","木","水","火","土","月"};
-    public static final String[] MOONS = {"....(","...(.","..◎..",".)...",")...."};
-    public static final String[] SUNS = {"O     "," O    ","","","","","","","","","",""};
+    public static final String[] SEASONS = {"春", "夏", "秋", "冬"};
+    public static final String[] YEARS = {"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
+    public static final String[] HOURS = {"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"};
+    public static final String[] WEEKDAYS = {"日", "金", "木", "水", "火", "土", "月"};
+    public static final String[] MOONS = {"....(", "...(.", "..◎..", ".)...", ")...."};
+    public static final String[] SUNS = {"O     ", " O    ", "", "", "", "", "", "", "", "", "", ""};
     // 出错时的信息
     public static final String PlayerPosError = "没有设置玩家的初始位置。";
     public static final String EventOverflow = "调用的公共事件超过过上限。";
     // 角色坐标
     public static final String X = "坐标x";
     public static final String Y = "坐标y";
-//    角色属性称呼
+    //    角色属性称呼
     public static final String Str = "臂力";
     public static final String Con = "根骨";
     public static final String Dex = "身法";
     public static final String Int = "悟性";
     public static final String Wis = "五感";
     public static final String Cha = "福缘";
-//    角色信息
+    //    角色信息
     public static final String Name = "姓名";
     public static final String Character = "角色图";
     public static final String Face = "头像";
@@ -111,14 +111,15 @@ public final class Vocab {
     public static final String Faith = "思想";
     public static final String Sex = "性别";
     public static final String Story = "背景故事";
-//  技能信息
+    //  技能信息
     public static final String CLASS = "类别";
     public static final String CH = "属性";
     public static final String DMG = "伤害";
     public static final String DFA = "招式";
     public static final String DAC = "护体";
-    public static final String DMP= "耗内";
+    public static final String DMP = "耗内";
     public static final String DAP = "动作";
+
     public String replaceNumber(String s) {
         s = s.replace("-", "负");
         s = s.replace("+", "正");

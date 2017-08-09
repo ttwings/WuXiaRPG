@@ -3,13 +3,11 @@ package com.mygdx.game.manager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by apple on 17/1/4.
+ * Created by ttwings on 17/1/4.
  */
 public class AnimationManager {
     private AnimationManager() {
@@ -29,52 +27,6 @@ public class AnimationManager {
     Animation animation = new Animation(frameDuration, keyFrames);
     Cache cache = Cache.instance();
     Map<String,Animation> attackAniMap = new HashMap<>();
-    public Animation action(String name) {
-        return animation("Data/Actions.txt","Action",name);
-    }
-    public Animation skill(String name) {
-        return animation("data/Skill.txt","Skill",name);
-    }
-    public Animation mod(String name) {
-        return animation("data/Mod.txt","Mod",name);
-    }
-    public Animation move(String name){return animation("Data/Move.txt","Mod",name);}
-
-    public TextureRegion[] moveFrames(String name){
-        return keyFrames("Data/Moves.txt","Move",name);
-    }
-    public TextureRegion[] keyFrames(String dataFile,String textureName,String name){
-        int length, index, begin, end;
-        boolean isFlip;
-        String s, numS;
-        TextureRegion[] textureRegion;
-        s = ReadData.data(dataFile,name,"起始序号");
-        begin = Integer.parseInt(s);
-        s = ReadData.data(dataFile,name,"结束序号");
-        end = Integer.parseInt(s);
-        s = ReadData.data(dataFile,name,"翻转");
-        isFlip = Boolean.parseBoolean(s);
-        length = end - begin + 1;
-        textureRegion = new TextureRegion[length];
-        for (int i = 0; i < length; i++) {
-            index = begin + i;
-            numS = new DecimalFormat("00000").format(index);
-            textureRegion[i] = new TextureRegion(cache.animation(textureName+"/"+textureName + numS + ".png"));
-            textureRegion[i].flip(isFlip,false);
-        }
-        return textureRegion;
-    }
-    public Animation animation(String dataFile,String textureName,String name,float frameDuration){
-        return new Animation(frameDuration,keyFrames(dataFile,textureName,name));
-    }
-    public Animation animation(String dataFile,String textureName,String name){
-        float frameDuration;
-        String s;
-        s = ReadData.data(dataFile,name,"时长");
-        frameDuration = Float.parseFloat(s);
-        return new Animation(frameDuration,keyFrames(dataFile,textureName,name));
-    }
-
     public Animation getAttackAni(String file){
         Animation ani;
         dur = 0;
