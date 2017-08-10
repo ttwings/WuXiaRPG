@@ -14,12 +14,13 @@ public class WorldController extends InputAdapter {
         return instance;
     }
     StageManager stageManager = StageManager.getInstance();
-    public int gameTurn = 100;
+    public long gameTurn = 0L;
 
     private void init() {
         stageManager.currentStage = new StageMain();
     }
     public void update() {
+        gameTurn++;
         Gdx.input.setInputProcessor(stageManager.currentStage);
         stageManager.currentStage.act();
     }

@@ -34,29 +34,22 @@ import java.util.*;
  */
 public class StageMap extends Stage {
     private String TAG = Gdx.class.getSimpleName();
-
     private StageMap() {
         init();
     }
-
     private static StageMap instance = new StageMap();
-
     public static StageMap getInstance() {
         return instance;
     }
-
     Stage UIStage = new Stage();
     int w = 16;
     int h = 16;
     int x;
     int y;
-
     String me = "虚竹";
     Json json = new Json();
-    String[][] regionMap = new String[10][10];
+    String[][] regionMap = new String[20][20];
     String[][] mapWin = new String[5][5];
-    TextureRegion[][] actorMap = new TextureRegion[h][w];
-    TextureRegion[][] animMap = new TextureRegion[h][w];
     FontManager fontManager = FontManager.getInstance();
     //    BitmapFont font;
     BitmapFont font24;
@@ -66,6 +59,7 @@ public class StageMap extends Stage {
     BaseActor npc1;
     public Attack attack1, attack2;
     public int ax = 15, ay = 15;
+//    菜单窗口文本
     public String[][] menuWin = new String[20][20];
     public String[][] lookWin = new String[3][15];
     public String[][] timeWin = new String[3][12];
@@ -74,9 +68,12 @@ public class StageMap extends Stage {
     public String[][] messageWin = new String[25][9];
     public String[][] skillWin = new String[4][40];
     public String[][] buffWin = new String[2][20];
+//    信息列表
     public ArrayList<String> battleMsg = new ArrayList<>();
     public ArrayList<String> nomalMsg = new ArrayList<>();
+//    日历
     GameCalendar calendar;
+//    本地地图
     MapLocal mapLocal;
     public Animation animation;
     public String attackMessage = "";
@@ -133,10 +130,12 @@ public class StageMap extends Stage {
         font = fontManager.fontL;
         font24 = fontManager.fontL;
         dmgFont = fontManager.fontL;
+//        修改地图判断角色进入到哪个区域，显示相应的区域描述，可以用excel处理文本矩阵进行设定。同时可以方便画地图。
+//        总的大地图不到100张，不算困难，同时可以在一些地方做特殊的描述。丰富游戏内容。
         roomMsg = getRoomDesc(roomMap, regionMap[baseActor.ry][baseActor.rx]);
-
         addMsg(roomMsg);
         tiledMap = tiledMapName.get("武馆大厅");
+//        战斗动画测试
         frames = TextureRegion.split(Cache.instance().character("001-Fighter01.png"), 32, 48);
 //      进度条测试
         progessBarTexture = Cache.instance().system("bar.png");
@@ -210,8 +209,8 @@ public class StageMap extends Stage {
         faceWin[3][10] = "精力";
         faceWin[5][12] = Show.disExp(baseActor.HP, baseActor.maxHP);
         faceWin[4][12] = Show.disExp(baseActor.MP, baseActor.maxMP);
-        faceWin[5][18] = String.valueOf(baseActor.HP);
-        faceWin[4][18] = String.valueOf(baseActor.MP);
+//        faceWin[5][18] = String.valueOf(baseActor.HP);
+//        faceWin[4][18] = String.valueOf(baseActor.MP);
 
 //        menuWin[21][3] = baseActor.skills[0];
 //        menuWin[18][3] = baseActor.target;
@@ -369,14 +368,13 @@ public class StageMap extends Stage {
     public void act() {
         super.act();
         UIStage.act();
-        this.calendar = calendar.opratorAdd(1);
+        calendar.opratorAdd(1);
         handleDebugInput();
         mapWin = Show.miniMap(regionMap, baseActor.rx, baseActor.ry, 5, 5);
         updataMenuWin();
-//        actorMap = Show.actorsMap(tileMap,actors,me);
-
         fps = Gdx.graphics.getFramesPerSecond();
         baseActor.updata();
+
         roomMsg = getRoomDesc(roomMap, regionMap[baseActor.ry][baseActor.rx]);
 
         tiledMap = tiledMapName.get(regionMap[baseActor.ry][baseActor.rx]);
@@ -408,7 +406,7 @@ public class StageMap extends Stage {
         Show.renderCall(getBatch(), label, baseActor, 2.0f);
 
         getBatch().end();
-
+//  UI 场景
         UIStage.getBatch().begin();
         Show.renderWin(UIStage.getBatch(), font, menuWin, 900, 10);
         Show.renderWin(UIStage.getBatch(), font, lookWin, 384, 736);

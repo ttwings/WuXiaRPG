@@ -27,9 +27,9 @@ public class Constants {
     public static int KEY_L = Input.Keys.S;
     public static int KEY_R = Input.Keys.F;
     public static int KEY_A = Input.Keys.J;
-    public static int KEY_B = Input.Keys.K;
+    public static int KEY_B = Input.Keys.L;
     public static int KEY_X = Input.Keys.I;
-    public static int KEY_Y = Input.Keys.L;
+    public static int KEY_Y = Input.Keys.K;
     public static int KEY_BACK = Input.Keys.G;
     public static int KEY_START = Input.Keys.H;
     public static int KEY_L1 = Input.Keys.R;

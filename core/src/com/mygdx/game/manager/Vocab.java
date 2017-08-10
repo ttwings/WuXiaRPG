@@ -77,8 +77,11 @@ public final class Vocab {
     public static final String CALENDAR = "%s年%s季%2d日%s时%s";
     public static final String[] SEASONS = {"春", "夏", "秋", "冬"};
     public static final String[] YEARS = {"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
+    public static final String[] DIGITS = {"负","零", "十", "百", "千", "万", "亿", "兆"};
+    public static final String[] NUMS = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
+    public static final String[] TIANS = {"甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"};
     public static final String[] HOURS = {"子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"};
-    public static final String[] WEEKDAYS = {"日", "金", "木", "水", "火", "土", "月"};
+    public static final String[] WEEKDAYS = {"月曜日","火曜日","水曜日","木曜日","金曜日","土曜日","日曜日"};
     public static final String[] MOONS = {"....(", "...(.", "..◎..", ".)...", ")...."};
     public static final String[] SUNS = {"O     ", " O    ", "", "", "", "", "", "", "", "", "", ""};
     // 出错时的信息
