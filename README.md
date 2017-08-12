@@ -22,5 +22,7 @@ ps：一个人开发好累，周围都没一个人能帮，大学的兄弟们都
 
 ## 进度截图
 ![Desktop](doc/desktop.png)
+![用EXCEL处理地图](doc/excelMap.png)
+![用tiled画的地图](doc/20170813.png)
 
 提前谢谢大家的参与~~

@@ -1,10 +1,11 @@
 package com.mygdx.game.map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.actor.BaseActor;
 import com.mygdx.game.manager.ReadData;
+
+import java.util.Map;
 
 /**
  * 本地地图
@@ -28,19 +29,15 @@ public class MapLocal {
 	public Vector2 wind2D;
 	//	区域地形高度
 	public int[][] level;
-	//	地图图块数据
-	//
+	//	room地图
+	public String[][] rooms;
 	public String[][] datas;
-	//	地板纹理
-	//	public EnumFloor[][] floor;
-	//	植被
-	//	覆盖层
-	//	物品层
-	//	public String[][] objStr;
-	//	人物层
-	public TiledMap tiledMap;
-	public String[][] actorMat;
-
+//	地图中所包含的人物列表
+	public Map<String,BaseActor> actorMap;
+//	地图中所包含的房间列表
+	public Map<String,Room> roomMap;
+//	事件列表,例如无量玉璧、钱塘观潮、金顶霞光等、当人物处在区域地图时，才进行判断
+//	public Map<String,>
 	public MapLocal(Vector2 posRegion, Vector2 posWorld, int w, int h, int l, String bolilmStr, String weatherStr, int temperature, Vector2 wind2D, int[][] level, String[][] datas) {
 		this.posRegion = posRegion;
 		this.posWorld = posWorld;
@@ -67,32 +64,20 @@ public class MapLocal {
 		this.wind2D = new Vector2(0, 0);
 		this.level = null;
 		this.datas = null;
-		this.actorMat = null;
 	}
 
-
 	public MapLocal(int w, int h) {
-		int rand;
+		this.posRegion = new Vector2(0, 0);
+		this.posWorld = new Vector2(0, 0);
 		this.w = w;
 		this.h = h;
-		l = 0;
-		datas = new String[h][w];
-		for(int i = 0; i < h; ++i) {
-			for(int j = 0; j < w; ++j) {
-				datas[i][j] = "土1,空气,空气,空气";
-				if(MathUtils.random(10) % 2 == 0) {
-					datas[i][j] = "草1,空气,空气,空气";
-				}
-				if(MathUtils.random(10) == 5) {
-					rand = MathUtils.random(10) + 1;
-					datas[i][j] = "土1,空气,野生植物" + rand + ",空气";
-				}
-				if(MathUtils.random(10) == 9) {
-					rand = MathUtils.random(25) + 1;
-					datas[i][j] = "草1,空气,空气,树木" + rand;
-				}
-			}
-		}
+		this.l = 0;
+		this.bolilmStr = null;
+		this.weatherStr = null;
+		this.temperature = 0;
+		this.wind2D = new Vector2(0, 0);
+		this.level = new int[h][w];
+		this.datas = new String[h][w];
 	}
 	public void readMatData(String file,int x,int y,int w,int h){
 		String[][] matDatas = ReadData.readStrMat(file);
@@ -139,6 +124,5 @@ public class MapLocal {
 		}
 		return str2;
 	}
-
 
 }

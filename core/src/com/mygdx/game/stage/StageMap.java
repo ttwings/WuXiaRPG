@@ -48,7 +48,7 @@ public class StageMap extends Stage {
     int y;
     String me = "虚竹";
     Json json = new Json();
-    String[][] regionMap = new String[20][20];
+    String[][] regionMap = new String[64][64];
     String[][] mapWin = new String[5][5];
     FontManager fontManager = FontManager.getInstance();
     //    BitmapFont font;
@@ -109,7 +109,7 @@ public class StageMap extends Stage {
     void init() {
         loadData();
         UIStage.setViewport(getViewport());
-        tiledMapName.put("武馆大厅", tmxMapLoader.load("tileMaps/wuguan-keting.tmx"));
+        tiledMapName.put("襄阳.武馆", tmxMapLoader.load("tileMaps/wuguan-keting.tmx"));
 //        mapLocal = new MapLocal(128,128);
         baseActor = actors.get(me);
         npc1 = actors.get("段誉");
@@ -134,7 +134,7 @@ public class StageMap extends Stage {
 //        总的大地图不到100张，不算困难，同时可以在一些地方做特殊的描述。丰富游戏内容。
         roomMsg = getRoomDesc(roomMap, regionMap[baseActor.ry][baseActor.rx]);
         addMsg(roomMsg);
-        tiledMap = tiledMapName.get("武馆大厅");
+        tiledMap = tiledMapName.get("襄阳.武馆");
 //        战斗动画测试
         frames = TextureRegion.split(Cache.instance().character("001-Fighter01.png"), 32, 48);
 //      进度条测试
@@ -209,8 +209,10 @@ public class StageMap extends Stage {
         faceWin[3][10] = "精力";
         faceWin[5][12] = Show.disExp(baseActor.HP, baseActor.maxHP);
         faceWin[4][12] = Show.disExp(baseActor.MP, baseActor.maxMP);
-//        faceWin[5][18] = String.valueOf(baseActor.HP);
-//        faceWin[4][18] = String.valueOf(baseActor.MP);
+        faceWin[5][18] = "X:"+String.valueOf(baseActor.getX());
+        faceWin[4][18] = "Y:"+String.valueOf(baseActor.getY());
+        faceWin[3][18] = "LX:"+String.valueOf(baseActor.lx);
+        faceWin[2][18] = "LY:"+String.valueOf(baseActor.ly);
 
 //        menuWin[21][3] = baseActor.skills[0];
 //        menuWin[18][3] = baseActor.target;
@@ -370,14 +372,14 @@ public class StageMap extends Stage {
         UIStage.act();
         calendar.opratorAdd(1);
         handleDebugInput();
-        mapWin = Show.miniMap(regionMap, baseActor.rx, baseActor.ry, 5, 5);
+        mapWin = Show.miniMap(regionMap, (int)baseActor.getX()/32, (int)baseActor.getY()/32, 5, 5);
         updataMenuWin();
         fps = Gdx.graphics.getFramesPerSecond();
         baseActor.updata();
 
-        roomMsg = getRoomDesc(roomMap, regionMap[baseActor.ry][baseActor.rx]);
+        roomMsg = getRoomDesc(roomMap, regionMap[(int)baseActor.getY()/32][(int)baseActor.getX()/32]);
 
-        tiledMap = tiledMapName.get(regionMap[baseActor.ry][baseActor.rx]);
+//        tiledMap = tiledMapName.get(regionMap[baseActor.ry][baseActor.rx]);
         baseActor.act(0.2f);
         count = count + Gdx.graphics.getDeltaTime() * 10;
         progressBar.setValue(count);

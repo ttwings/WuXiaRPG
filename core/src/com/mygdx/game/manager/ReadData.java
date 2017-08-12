@@ -156,7 +156,7 @@ public class ReadData {
         }
         return map;
     }
-
+//  获取房间信息，街道，走廊也算作房间的一种
     public static Map<String,Room> roomMap(String fileName){
         Map<String, Room> map = new HashMap<>();
         ArrayList<String> arrayList = readArrayFromFile(fileName);
