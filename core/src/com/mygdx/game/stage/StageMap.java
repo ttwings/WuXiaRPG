@@ -372,12 +372,12 @@ public class StageMap extends Stage {
         UIStage.act();
         calendar.opratorAdd(1);
         handleDebugInput();
-        mapWin = Show.miniMap(regionMap, (int)baseActor.getX()/32, (int)baseActor.getY()/32, 5, 5);
+        mapWin = Show.miniMap(regionMap, (int)baseActor.getX()/128, (int)baseActor.getY()/128, 5, 5);
         updataMenuWin();
         fps = Gdx.graphics.getFramesPerSecond();
         baseActor.updata();
 
-        roomMsg = getRoomDesc(roomMap, regionMap[(int)baseActor.getY()/32][(int)baseActor.getX()/32]);
+        roomMsg = getRoomDesc(roomMap, regionMap[(int)baseActor.getY()/128][(int)baseActor.getX()/128]);
 
 //        tiledMap = tiledMapName.get(regionMap[baseActor.ry][baseActor.rx]);
         baseActor.act(0.2f);
