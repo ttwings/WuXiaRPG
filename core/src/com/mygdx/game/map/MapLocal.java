@@ -1,8 +1,10 @@
 package com.mygdx.game.map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.actor.BaseActor;
+import com.mygdx.game.gameClass.Tile;
 import com.mygdx.game.manager.ReadData;
 
 import java.util.Map;
@@ -14,6 +16,8 @@ import java.util.Map;
  * @since 2013-12-30 下午3:46:30
  */
 public class MapLocal {
+//	id
+	public String name;
 	//	在区域中的位置，在世界地图中的位置
 	public Vector2 posRegion;
 	public Vector2 posWorld;
@@ -38,6 +42,7 @@ public class MapLocal {
 	public Map<String,Room> roomMap;
 //	事件列表,例如无量玉璧、钱塘观潮、金顶霞光等、当人物处在区域地图时，才进行判断
 //	public Map<String,>
+	public TiledMap tiledMap;
 	public MapLocal(Vector2 posRegion, Vector2 posWorld, int w, int h, int l, String bolilmStr, String weatherStr, int temperature, Vector2 wind2D, int[][] level, String[][] datas) {
 		this.posRegion = posRegion;
 		this.posWorld = posWorld;
@@ -102,27 +107,10 @@ public class MapLocal {
 		this.w = datas[0].length;
 		this.h = datas.length;
 	}
-
-	void changeTile(MapLocal mapLocal,int x, int y, int index, String tile){
-		String[] tempStr = mapLocal.datas[y][x].split(",");
-		tempStr[index] = tile;
-		String dataStr = "";
-		for (int i=0;i<tempStr.length;i++){
-			dataStr =dataStr + tempStr[i]+",";
-		}
-		mapLocal.datas[y][x] = dataStr;
-		Gdx.app.debug("",dataStr);
+	public void setTiledMap(TiledMap map){
+		this.tiledMap = map;
 	}
-	String  getTile(MapLocal mapLocal,int x,int y,int index){
-		String str1,str2;
-		str1 = mapLocal.datas[x][y].split(",")[index];
-		if(str1!="空气"){
-			str2 = str1;
-			changeTile(mapLocal,x,y,index,"空气");
-		}else {
-			str2="";
-		}
-		return str2;
+	public void setName(String name){
+		this.name = name;
 	}
-
 }

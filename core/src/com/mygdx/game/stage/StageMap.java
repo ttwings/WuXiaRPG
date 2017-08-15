@@ -108,9 +108,13 @@ public class StageMap extends Stage {
 
     void init() {
         loadData();
+        mapLocal = new MapLocal();
         UIStage.setViewport(getViewport());
         tiledMapName.put("襄阳.武馆", tmxMapLoader.load("tileMaps/wuguan-keting.tmx"));
-//        mapLocal = new MapLocal(128,128);
+//      测试本地地图类
+        mapLocal.setName("襄阳.武馆");
+        mapLocal.setTiledMap(tiledMapName.get("襄阳.武馆"));
+// mapLocal = new MapLocal(128,128);
         baseActor = actors.get(me);
         npc1 = actors.get("段誉");
         baseActor.target = "段誉";
@@ -394,6 +398,8 @@ public class StageMap extends Stage {
         getBatch().begin();
         Show.mapLayers(getBatch(), tiledMap, 0, 0);
 //        Show.renderTileMap(getBatch(),actorMap,384,192);
+        getBatch().draw(animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn), baseActor.getX(), baseActor.getY());
+
         Show.mapLayer(getBatch(), tiledMap, 0, 0, "cover");
         dur = animationManager.dur;
         Show.actorsName(getBatch(), actors, font, 0, 70, me);
@@ -404,7 +410,7 @@ public class StageMap extends Stage {
         getCamera().position.set(baseActor.getX(), baseActor.getY(), 0);
         renderAnimation(animation, (int) SkillActions.handPos(baseActor).x - 80, (int) SkillActions.handPos(baseActor).y - 80, animationManager.dur);
 
-        getBatch().draw(animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn), baseActor.getX(), baseActor.getY());
+//        getBatch().draw(animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn), baseActor.getX(), baseActor.getY());
         Show.renderCall(getBatch(), label, baseActor, 2.0f);
 
         getBatch().end();
