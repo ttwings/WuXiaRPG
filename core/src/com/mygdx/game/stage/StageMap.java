@@ -134,8 +134,6 @@ public class StageMap extends Stage {
         font = fontManager.fontL;
         font24 = fontManager.fontL;
         dmgFont = fontManager.fontL;
-//        修改地图判断角色进入到哪个区域，显示相应的区域描述，可以用excel处理文本矩阵进行设定。同时可以方便画地图。
-//        总的大地图不到100张，不算困难，同时可以在一些地方做特殊的描述。丰富游戏内容。
         roomMsg = getRoomDesc(roomMap, regionMap[baseActor.ry][baseActor.rx]);
         addMsg(roomMsg);
         tiledMap = tiledMapName.get("襄阳.武馆");
@@ -172,12 +170,17 @@ public class StageMap extends Stage {
         label = new Label("", labelStyle);
         addActor(label);
     }
-
+//数据载入
     void loadData() {
+//        角色信息数据，主要数据
         actors = ReadData.actorMap("Data/Actors.txt");
+//        tile 图块基本信息数据 名字 对应  图片纹理
         tileMap = ReadData.tileMap("Data/Tiles.txt");
+//        菜单设计矩阵，用于简单的设计菜单布局
         menuWin = ReadData.readStrMatSwapY("Data/mapStageWin.txt");
+
         regionMap = ReadData.readStrMatSwapY("Data/mapWuGuanMat.txt");
+//       地图信息，后期的路径规划，也需要在这里实现。
         roomMap = ReadData.roomMap("Data/Rooms.txt");
         baseActor = actors.get(me);
     }
