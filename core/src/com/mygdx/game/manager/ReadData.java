@@ -5,13 +5,14 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.mygdx.game.action.Attack;
 import com.mygdx.game.actor.BaseActor;
+import com.mygdx.game.actor.TableData;
 import com.mygdx.game.gameClass.Tile;
 import com.mygdx.game.map.Room;
+import com.thoughtworks.qdox.model.util.OrderedMap;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -156,6 +157,28 @@ public class ReadData {
         }
         return map;
     }
+//
+public static Map<String,TableData> tableDateMap(String fileName){
+        Map<String, TableData> map = new OrderedMap();
+        ArrayList<String> arrayList = readArrayFromFile(fileName);
+        String[] strings;
+        TableData actor;
+        String[] keys;
+        keys = arrayList.get(0).split("\t");
+        if (arrayList.size() == 0) {
+//            Gdx.app.log("nameMap", "没有数据");
+        }
+        for (int i = 1; i < arrayList.size(); i++) {
+            strings = arrayList.get(i).split("\t");
+            actor = new TableData();
+            for (int j=0;j<keys.length;j++){
+                actor.put(keys[j],strings[j]);
+            }
+            map.put(actor.get("名称"),actor);
+        }
+        return map;
+    }
+
 //  获取房间信息，街道，走廊也算作房间的一种
     public static Map<String,Room> roomMap(String fileName){
         Map<String, Room> map = new HashMap<>();

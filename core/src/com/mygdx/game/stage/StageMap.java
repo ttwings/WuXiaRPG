@@ -16,6 +16,7 @@ import com.mygdx.game.action.Attack;
 import com.mygdx.game.action.SkillActions;
 import com.mygdx.game.actor.BaseActor;
 import com.mygdx.game.action.ActionManager;
+import com.mygdx.game.actor.TableData;
 import com.mygdx.game.gameClass.GameCalendar;
 import com.mygdx.game.gameClass.Tile;
 import com.mygdx.game.manager.*;
@@ -46,7 +47,7 @@ public class StageMap extends Stage {
     int h = 16;
     int x;
     int y;
-    String me = "虚竹";
+    String me = "言达平";
     Json json = new Json();
     String[][] regionMap = new String[64][64];
     String[][] mapWin = new String[5][5];
@@ -105,6 +106,10 @@ public class StageMap extends Stage {
     Label.LabelStyle labelStyle;
 
     LazyBitmapFont font;
+//    测试新的类，用map来包装属性，可以让属性自由扩展。
+    Map<String,TableData> peoples = new HashMap<>();
+    Map<String,TableData> foods = new HashMap<>();
+    TableData people = new TableData();
 
     void init() {
         loadData();
@@ -118,6 +123,9 @@ public class StageMap extends Stage {
         baseActor = actors.get(me);
         npc1 = actors.get("段誉");
         baseActor.target = "段誉";
+        people = peoples.get(me);
+        people.put("目标","慕容复");
+        peoples.get("段誉").get("称号");
         npc1.target = me;
         npc1.actionStr = "闲逛";
         npc1.lx = 10;
@@ -169,11 +177,15 @@ public class StageMap extends Stage {
         labelStyle.fontColor = Color.YELLOW;
         label = new Label("", labelStyle);
         addActor(label);
+//  测试表数据是否可以读取
+        System.out.print(foods.get("桂花糕").get("物品描述"));
     }
 //数据载入
     void loadData() {
 //        角色信息数据，主要数据
         actors = ReadData.actorMap("Data/Actors.txt");
+        peoples = ReadData.tableDateMap("Data/Actors.txt");
+        foods  = ReadData.tableDateMap("Data/Foods.txt");
 //        tile 图块基本信息数据 名字 对应  图片纹理
         tileMap = ReadData.tileMap("Data/Tiles.txt");
 //        菜单设计矩阵，用于简单的设计菜单布局
@@ -195,7 +207,7 @@ public class StageMap extends Stage {
 
     void updataMenuWin() {
         timeWin[0][4] = calendar.printCalenar();
-        timeWin[0][0] = baseActor.region;
+        timeWin[0][0] = people.get("区域");
 //        timeWin[1][0] = "[LIGHT_GRAY]" + calendar.moon();
 //        timeWin[0][10] = "dur"+dur;
 
@@ -208,16 +220,16 @@ public class StageMap extends Stage {
 //        menuWin[28][5] = baseActor.MP + "";
 //        menuWin[28][2] = Show.disExp(baseActor.HP,baseActor.maxHP);
 
-        faceWin[5][5] = baseActor.nickname;
-        faceWin[4][5] = baseActor.name;
-        faceWin[3][5] = baseActor.family;
+        faceWin[5][5] = people.get("称号");
+        faceWin[4][5] = people.get("名称");
+        faceWin[3][5] = people.get("家族");
         faceWin[5][10] = "气血";
         faceWin[4][10] = "真气";
         faceWin[3][10] = "精力";
-        faceWin[5][12] = Show.disExp(baseActor.HP, baseActor.maxHP);
+        faceWin[5][12] = Show.disExp(Integer.parseInt(people.get("气血")), baseActor.maxHP);
         faceWin[4][12] = Show.disExp(baseActor.MP, baseActor.maxMP);
-        faceWin[5][18] = "X:"+String.valueOf(baseActor.getX());
-        faceWin[4][18] = "Y:"+String.valueOf(baseActor.getY());
+        faceWin[5][18] = "X:"+String.valueOf(people.get("坐标x"));
+        faceWin[4][18] = "Y:"+String.valueOf(people.get("坐标y"));
         faceWin[3][18] = "LX:"+String.valueOf(baseActor.lx);
         faceWin[2][18] = "LY:"+String.valueOf(baseActor.ly);
 
@@ -284,6 +296,7 @@ public class StageMap extends Stage {
     public boolean keyDown(int keycode) {
         if (keycode == Constants.KEY_A) {
             actionManager.actionKeyMap.get(baseActor.actionStr).passA(mapLocal, baseActor);
+            people.put("坐标x",String.valueOf(Integer.parseInt(people.get("坐标x"))+1));
         }
         if (keycode == Constants.KEY_B) {
             actionManager.actionKeyMap.get(baseActor.actionStr).passB(mapLocal, baseActor);
@@ -406,6 +419,7 @@ public class StageMap extends Stage {
         Show.mapLayer(getBatch(), tiledMap, 0, 0, "cover");
         dur = animationManager.dur;
         Show.actorsName(getBatch(), actors, font, 0, 70, me);
+
 //        Show.renderFont(getBatch(),dmgFont,"伤害",(int)baseActor.getX(),(int)baseActor.getY()+68);
         animationManager.updata();
 //        图片素材都是从左下角开始绘制，单个帧动画192*192大小，人物32*32大小。俩个的中心偏移量即 （192-32）/2 即 80 的偏移量

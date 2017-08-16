@@ -18,8 +18,6 @@ public class Room {
 	public String[] names;
 	public String[] objs;
 	public String describe;
-	public TiledMap tiledMap;
-//	public String[][] mapDatas;
 	public Room(String[] datas){
 		ID = datas[0];
 		name = datas[1];

@@ -82,7 +82,7 @@ public class BaseActor extends Image{
 	public String[] equips;
 	public String[] skills;
 	public String[] items;
-
+	public TableData tableDate;
 
 	public BaseActor() {
 		name = ""; // 名字
