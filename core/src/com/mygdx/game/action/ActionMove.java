@@ -40,7 +40,22 @@ public class ActionMove implements GamepadKey {
     }
     @Override
     public void passA(MapLocal mapLocal, BaseActor actor) {
-        StageMap.getInstance().addMsg("兄台，你好~~");
+//  直接获得物品
+//  1、判断地图中物品对象与actor的距离 2、显示最近的物品的名称 3、按键时判断背包大小获取物品
+        StageMap.getInstance().addMsg("得到："+actor.objName);
+        for (int i=0;i<10;i++){
+            if (actor.items[i].length()<2){
+                actor.items[i] = actor.objName;
+                mapLocal.removeObj("objs",actor.objName);
+                break;
+            }else if (i==10){
+                StageMap.getInstance().addMsg("包满了，装不下了");
+            }
+
+        }
+
+
+
     }
     @Override
     public void passB(MapLocal mapLocal, BaseActor actor) {

@@ -42,7 +42,7 @@ public class GameCalendar {
         ret += year * 14400 * 4 * 30;
         return ret;
     }
-    public GameCalendar(int turn)
+    public void updata(int turn)
     {
         int minute_param = turn / 10;
         int hour_param = minute_param / 60;
@@ -56,14 +56,14 @@ public class GameCalendar {
         year = season_param / 4;
     }
 
-    public GameCalendar opratorAdd(int turn){
+    public void opratorAdd(int turn){
         int newTurn = getTurn()+turn;
-        return new GameCalendar(newTurn);
+        updata(newTurn);
     }
 
-    public GameCalendar opratorSub(int turn){
+    public void  opratorSub(int turn){
         int newTurn = getTurn()-turn;
-        return new GameCalendar(newTurn);
+        updata(newTurn);
     }
 
     public String  printCalenar(){

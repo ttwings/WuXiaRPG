@@ -36,7 +36,6 @@ public class StageItem extends Stage {
         h = Constants.VIEWPORT_HEIGHT;
         x0 = 100;
         y0 = 100;
-        baseActor = ReadData.actorMap("Data/Actors.txt").get("万震山");
         stageMat = ReadData.readStrMatSwapY("Data/itemStage.txt");
         changeMat(baseActor);
         font = FontManager.getInstance().fontL;
@@ -55,6 +54,8 @@ public class StageItem extends Stage {
         stageMat[20][1] = actor.items[3];
         stageMat[19][1] = actor.items[4];
         stageMat[18][1] = actor.items[5];
+        stageMat[18][1] = "测试";
+
         stageMat[17][1] = actor.items[6];
         stageMat[16][1] = actor.items[7];
         stageMat[15][1] = actor.items[8];
@@ -84,12 +85,6 @@ public class StageItem extends Stage {
 //            changeIndex(1);
         }
         if (keycode == Constants.KEY_A) {
-            try {
-//                evalScripText(baseActor);
-                parse(baseActor);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         if (keycode == Input.Keys.H) {
 //            StageManager.getInstance().currentStage = StageMap.getInstance();
@@ -127,6 +122,12 @@ public class StageItem extends Stage {
     }
 
     @Override
+    public void act() {
+        super.act();
+        changeMat(baseActor);
+    }
+
+    @Override
     public void draw() {
         getBatch().begin();
         renderStageMat();
@@ -139,31 +140,5 @@ public class StageItem extends Stage {
         super.dispose();
 //        fontManager.dispose();
         font.dispose();
-    }
-//  test groovy script
-    public static void parse(BaseActor actor) throws Exception {
-        GroovyClassLoader classLoader = new GroovyClassLoader(Thread.currentThread().getContextClassLoader());
-        File sorceFile = new File("../src/com/mygdx/game/tools/TestGroovy.groovy");
-        Class testGroovyClass = classLoader.parseClass(new GroovyCodeSource(sorceFile));
-        GroovyObject instance = (GroovyObject) testGroovyClass.newInstance();
-        instance.setProperty("actor",actor);
-        instance.invokeMethod("printName", actor.name);
-        instance.invokeMethod("printActorName",actor);
-
-//        System.out.print(name);
-//        Long time = (long)instance.invokeMethod("getTime",new Date());
-//        System.out.println(time);
-//        Date date = (Date)instance.invokeMethod("getDate",time);
-//        System.out.println(date);
-//        instance = null;
-//        testGroovyClass = null;
-
-    }
-
-    public static void evalScripText(BaseActor actor) throws Exception {
-        Binding binding = new Binding();
-        GroovyShell shell = new GroovyShell(binding);
-        binding.setVariable("name", actor.name);
-        shell.evaluate("println 'hello world! i am '+ name");
     }
 }

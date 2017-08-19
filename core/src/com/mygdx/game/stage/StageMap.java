@@ -4,9 +4,14 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.*;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
@@ -35,6 +40,8 @@ import java.util.*;
  */
 public class StageMap extends Stage {
     private String TAG = Gdx.class.getSimpleName();
+
+
     private StageMap() {
         init();
     }
@@ -47,7 +54,7 @@ public class StageMap extends Stage {
     int h = 16;
     int x;
     int y;
-    String me = "言达平";
+    String me = "乔峰";
     Json json = new Json();
     String[][] regionMap = new String[64][64];
     String[][] mapWin = new String[5][5];
@@ -61,17 +68,17 @@ public class StageMap extends Stage {
     public Attack attack1, attack2;
     public int ax = 15, ay = 15;
 //    菜单窗口文本
-    public String[][] menuWin = new String[20][20];
-    public String[][] lookWin = new String[3][15];
-    public String[][] timeWin = new String[3][12];
-    public String[][] faceWin = new String[8][40];
-    public String[][] battleWin = new String[9][19];
-    public String[][] messageWin = new String[25][9];
-    public String[][] skillWin = new String[4][40];
-    public String[][] buffWin = new String[2][20];
+    String[][] menuWin = new String[20][20];
+    String[][] lookWin = new String[3][15];
+    String[][] timeWin = new String[3][12];
+    String[][] faceWin = new String[8][40];
+    String[][] battleWin = new String[9][19];
+    String[][] messageWin = new String[25][9];
+    String[][] skillWin = new String[4][40];
+    String[][] buffWin = new String[2][20];
 //    信息列表
-    public ArrayList<String> battleMsg = new ArrayList<>();
-    public ArrayList<String> nomalMsg = new ArrayList<>();
+    ArrayList<String> battleMsg = new ArrayList<>();
+    ArrayList<String> nomalMsg = new ArrayList<>();
 //    日历
     GameCalendar calendar;
 //    本地地图
@@ -79,7 +86,7 @@ public class StageMap extends Stage {
     public Animation animation;
     public String attackMessage = "";
     public Map<String, BaseActor> actors = new HashMap<>();
-    public Map<String, Tile> tileMap = new HashMap<>();
+    Map<String, Tile> tileMap = new HashMap<>();
     Map<String, Room> roomMap = new HashMap<>();
     String roomMsg = "";
     int fps;
@@ -88,38 +95,30 @@ public class StageMap extends Stage {
     Map<String, TiledMap> tiledMapName = new HashMap<>();
     TmxMapLoader tmxMapLoader = new TmxMapLoader();
     TextureRegion[][] frames;
-    //    进度条
-    Texture progessBarTexture;
-    Texture knobTexture;
-    ProgressBar progressBar;
-    float count = 0;
-    //    圆形cd
-    CircularProgress circularProgress;
-    Texture circularCoverTexture;
-    //    另一种风格CD
-    ProgressActor progressActor;
-    //    另一种圆形
-    ProgressTimer progress;
-    //    伤害数字显示
+
     BitmapFont dmgFont;
     Label label;
     Label.LabelStyle labelStyle;
 
     LazyBitmapFont font;
 //    测试新的类，用map来包装属性，可以让属性自由扩展。
-    Map<String,TableData> peoples = new HashMap<>();
-    Map<String,TableData> foods = new HashMap<>();
+    Map<String,TableData> peoples;
+    Map<String,TableData> foods;
+    Map<String, TableData> rooms;
+    Map<String, TableData> objs;
     TableData people = new TableData();
-
+//测试tiledmaprender
+    OrthogonalTiledMapRenderer renderer;
+//最近的物品名称及描述
+    String objMsg = "";
     void init() {
         loadData();
-        mapLocal = new MapLocal();
         UIStage.setViewport(getViewport());
+        mapLocal = new MapLocal();
         tiledMapName.put("襄阳.武馆", tmxMapLoader.load("tileMaps/wuguan-keting.tmx"));
-//      测试本地地图类
         mapLocal.setName("襄阳.武馆");
         mapLocal.setTiledMap(tiledMapName.get("襄阳.武馆"));
-// mapLocal = new MapLocal(128,128);
+        tiledMap = mapLocal.getTiledMap();
         baseActor = actors.get(me);
         npc1 = actors.get("段誉");
         baseActor.target = "段誉";
@@ -136,49 +135,25 @@ public class StageMap extends Stage {
         x = baseActor.lx;
         y = baseActor.ly;
         battleMsg = new ArrayList<>();
-        calendar = new GameCalendar(100000);
+        calendar = new GameCalendar();
 
         updataMenuWin();
         font = fontManager.fontL;
         font24 = fontManager.fontL;
         dmgFont = fontManager.fontL;
-        roomMsg = getRoomDesc(roomMap, regionMap[baseActor.ry][baseActor.rx]);
+        showRoomMsg(regionMap[baseActor.ry][baseActor.rx]);
         addMsg(roomMsg);
-        tiledMap = tiledMapName.get("襄阳.武馆");
+
 //        战斗动画测试
-        frames = TextureRegion.split(Cache.instance().character("001-Fighter01.png"), 32, 48);
-//      进度条测试
-        progessBarTexture = Cache.instance().system("bar.png");
-        knobTexture = Cache.instance().system("knob.png");
-        ProgressBar.ProgressBarStyle pbs = new ProgressBar.ProgressBarStyle();
-        pbs.background = new TextureRegionDrawable(new TextureRegion(progessBarTexture));
-//        pbs.background.
-//        pbs.background.setMinWidth(200);
-//        pbs.background.setMinWidth(100);
-        pbs.knob = new TextureRegionDrawable(new TextureRegion(knobTexture));
-        progressBar = new ProgressBar(0, 100, 1, false, pbs);
-        progressBar.setSize(400, 10);
-        progressBar.setPosition(640 - 100, 300);
-        progressBar.setValue(count);
-        addActor(progressBar);
-        //        UIStage.addActor(baseActor);
-//        UIStage.addActor(npc1);
-//        圆形进度条测试
-        circularProgress = new CircularProgress(new TextureRegion(Cache.instance().system("circular.png")));
-        circularProgress.setPosition(640 - 50, 60);
-        circularCoverTexture = Cache.instance().system("circularCover.png");
-//        另一种风格测试
-        progressActor = new ProgressActor();
-        UIStage.addActor(progressActor);
-        progress = new ProgressTimer(circularCoverTexture, 100, 100, 5, 16, 3, ProgressTimer.DIRECTION_COUNTERCLOCKWISE);
-//   用label显示伤害
-        labelStyle = new Label.LabelStyle();
-        labelStyle.font = font;
-        labelStyle.fontColor = Color.YELLOW;
-        label = new Label("", labelStyle);
-        addActor(label);
-//  测试表数据是否可以读取
-        System.out.print(foods.get("桂花糕").get("物品描述"));
+        frames = TextureRegion.split(Cache.instance().character(people.get("行走图")), 32, 48);
+        renderer = new OrthogonalTiledMapRenderer(tiledMap);
+    }
+    void showRoomMsg(String roomName){
+        if (roomName.length()>1){
+            roomMsg = rooms.get(roomName).get("描述");
+        }else {
+            roomMsg = "";
+        }
     }
 //数据载入
     void loadData() {
@@ -186,6 +161,9 @@ public class StageMap extends Stage {
         actors = ReadData.actorMap("Data/Actors.txt");
         peoples = ReadData.tableDateMap("Data/Actors.txt");
         foods  = ReadData.tableDateMap("Data/Foods.txt");
+        rooms  = ReadData.tableDateMap("Data/Rooms.txt");
+        objs = ReadData.tableDateMap("Data/Objs.txt");
+
 //        tile 图块基本信息数据 名字 对应  图片纹理
         tileMap = ReadData.tileMap("Data/Tiles.txt");
 //        菜单设计矩阵，用于简单的设计菜单布局
@@ -196,29 +174,10 @@ public class StageMap extends Stage {
         roomMap = ReadData.roomMap("Data/Rooms.txt");
         baseActor = actors.get(me);
     }
-
-    String getRoomDesc(Map<String, Room> roomMap, String name) {
-        String desc = "";
-        if (roomMap.containsKey(name)) {
-            desc = roomMap.get(name).describe;
-        }
-        return desc;
-    }
-
     void updataMenuWin() {
         timeWin[0][4] = calendar.printCalenar();
+        timeWin[1][0] = String.valueOf(calendar.getTurn());
         timeWin[0][0] = people.get("区域");
-//        timeWin[1][0] = "[LIGHT_GRAY]" + calendar.moon();
-//        timeWin[0][10] = "dur"+dur;
-
-//        menuWin[32][0] = baseActor.nickname;
-//        menuWin[31][0] = baseActor.name;
-//        menuWin[31][4] = baseActor.family;
-//        menuWin[30][2] = Show.disExp(baseActor.HP,baseActor.maxHP);
-//        menuWin[29][5] = baseActor.HP + "";
-//        menuWin[29][2] = Show.disExp(baseActor.MP,baseActor.maxMP);
-//        menuWin[28][5] = baseActor.MP + "";
-//        menuWin[28][2] = Show.disExp(baseActor.HP,baseActor.maxHP);
 
         faceWin[5][5] = people.get("称号");
         faceWin[4][5] = people.get("名称");
@@ -233,54 +192,27 @@ public class StageMap extends Stage {
         faceWin[3][18] = "LX:"+String.valueOf(baseActor.lx);
         faceWin[2][18] = "LY:"+String.valueOf(baseActor.ly);
 
-//        menuWin[21][3] = baseActor.skills[0];
-//        menuWin[18][3] = baseActor.target;
-//        menuWin[25][5] = baseActor.actionStr;
-//        menuWin[25][0] = baseActor.region;
-//        menuWin[12][0] = Chinesed.number(2000000000);
-//        FontManager.getInstance().addCharacters(Chinesed.number(2000000000));
-//        menuWin[11][0] = Money.moneyStr(2000000000);
+        faceWin[0][0] = "[RED]内伤"+people.get("内伤");
+        faceWin[0][5] = "[GREEN]中毒"+people.get("中毒");
+        faceWin[0][10] = "[RED]流血"+people.get("流血");
+        faceWin[1][0] = "[YELLOW]灼烧"+people.get("灼烧");
+        faceWin[1][5] = "[BLUE]冰封"+people.get("冰封");
+        faceWin[1][10] = "[YELLOW]封穴"+people.get("封穴");
 
-//        menuWin[38][19] = baseActor.Con+"";
-//        menuWin[37][19] = baseActor.Dex+"";
-//        menuWin[36][19] = baseActor.Int+"";
-//        menuWin[35][19] = baseActor.Wis+"";
-//        menuWin[34][19] = baseActor.Cha+"";
-//        menuWin[30][0] = calendar.printCalenar();
-//        menuWin[31][2] = "[LIGHT_GRAY]" + calendar.moon();
         messageWin = addMessage(nomalMsg, messageWin);
         battleWin = addMessage(battleMsg, battleWin);
         strings = Show.str2array(roomMsg, 19);
-        skillWin[1][0] = "A";
-        skillWin[1][5] = "B";
-        skillWin[1][10] = "X";
-        skillWin[1][15] = "Y";
-        skillWin[1][20] = "R1";
-        skillWin[1][25] = "R2";
-        skillWin[1][30] = "L1";
-        skillWin[1][35] = "L2";
-        skillWin[1][1] = baseActor.skills[0];
-        skillWin[1][6] = "伏虎拳";
-        skillWin[1][11] = "罗汉伏魔";
-        skillWin[1][16] = "降龙伏虎";
-        skillWin[1][21] = "无";
-        skillWin[1][26] = "无";
-        skillWin[1][31] = "少林身法";
-        skillWin[1][36] = "少林内功";
-//        skillWin[0][1] = "3";
-//        skillWin[0][6] = "5";
-//        skillWin[0][11] = "15";
-//        skillWin[0][16] = "13";
-//        skillWin[0][21] = "0";
-//        skillWin[0][26] = "0";
-//        skillWin[0][31] = "20";
-//        skillWin[0][36] = "100";
-        buffWin[0][18] = "[YELLOW]内伤";
-        buffWin[0][16] = "[GREEN]中毒";
-        buffWin[0][14] = "[RED]流血";
-        buffWin[1][18] = "[GREEN]饱食";
-        buffWin[1][16] = "[BLUE]畅饮";
-        buffWin[1][14] = "[YELLOW]高兴";
+        skillWin[1][0] = "A："+people.get("技能1");
+        skillWin[1][5] = "B："+people.get("技能2");
+        skillWin[1][10] = "X："+people.get("技能3");
+        skillWin[1][15] = "Y："+people.get("技能4");
+        skillWin[1][20] = "R1："+people.get("技能5");
+        skillWin[1][25] = "R2："+people.get("技能6");
+        skillWin[1][30] = "L1："+people.get("技能7");
+        skillWin[1][35] = "L2："+people.get("技能8");
+
+        skillWin[3][20] = objMsg;
+
     }
 
     String[] strings;
@@ -291,7 +223,13 @@ public class StageMap extends Stage {
             font.draw(getBatch(), "[YELLOW]信息", baseActor.getX(), baseActor.getY() + 70 + dur * 32);
         }
     }
-
+    void updataObjMsg(){
+        if (objs.containsKey(baseActor.objName)){
+            objMsg = objs.get(baseActor.objName).get("描述");
+        }else {
+            objMsg = "";
+        }
+    }
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Constants.KEY_A) {
@@ -393,33 +331,29 @@ public class StageMap extends Stage {
         calendar.opratorAdd(1);
         handleDebugInput();
         mapWin = Show.miniMap(regionMap, (int)baseActor.getX()/128, (int)baseActor.getY()/128, 5, 5);
-        updataMenuWin();
+
         fps = Gdx.graphics.getFramesPerSecond();
         baseActor.updata();
-
-        roomMsg = getRoomDesc(roomMap, regionMap[(int)baseActor.getY()/128][(int)baseActor.getX()/128]);
-
-//        tiledMap = tiledMapName.get(regionMap[baseActor.ry][baseActor.rx]);
-        baseActor.act(0.2f);
-        count = count + Gdx.graphics.getDeltaTime() * 10;
-        progressBar.setValue(count);
-        circularProgress.setPercent(count / 100);
-//        progressBar.act(0.2f);
+        updataObjMsg();
+        updataMenuWin();
+        showRoomMsg(regionMap[(int)baseActor.getY()/128][(int)baseActor.getX()/128]);
     }
 
 
     @Override
     public void draw() {
         super.draw();
+        renderer.setView((OrthographicCamera) getCamera());
+        renderer.render();
+//        renderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get("floor"));
+        baseActor.objName = Show.objName(tiledMap,"objs",baseActor);
         getBatch().begin();
-        Show.mapLayers(getBatch(), tiledMap, 0, 0);
-//        Show.renderTileMap(getBatch(),actorMap,384,192);
-        getBatch().draw(animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn), baseActor.getX(), baseActor.getY());
-
-        Show.mapLayer(getBatch(), tiledMap, 0, 0, "cover");
+        baseActor.textureRegion = animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn);
         dur = animationManager.dur;
-        Show.actorsName(getBatch(), actors, font, 0, 70, me);
+        //        Show.mapLayers(getBatch(), tiledMap, 0, 0);
+        Show.objLayers(getBatch(),tiledMap,baseActor);
 
+        Show.actorsName(getBatch(), actors, font, 0, 70, me);
 //        Show.renderFont(getBatch(),dmgFont,"伤害",(int)baseActor.getX(),(int)baseActor.getY()+68);
         animationManager.updata();
 //        图片素材都是从左下角开始绘制，单个帧动画192*192大小，人物32*32大小。俩个的中心偏移量即 （192-32）/2 即 80 的偏移量
@@ -440,16 +374,11 @@ public class StageMap extends Stage {
         Show.renderWin(UIStage.getBatch(), font, mapWin, 940, 704, 64, 20);
         Show.renderWin(UIStage.getBatch(), font, messageWin, 10, 280);
         Show.renderWin(UIStage.getBatch(), font, faceWin, 15, 680);
-        Show.renderWin(UIStage.getBatch(), font, skillWin, 250, 20);
+        Show.renderWin(UIStage.getBatch(), font, skillWin, 20, 20);
         Show.renderWin(UIStage.getBatch(), font, buffWin, 500, 760);
         Show.renderStrs(UIStage.getBatch(), font, strings, 10, 560, 20);
         Show.faceTexture(UIStage.getBatch(), baseActor.faceName, 18, 700);
         Show.showFps(UIStage.getBatch(), font, fps, 10, 760);
-//        progressBar.draw(UIStage.getBatch(),1.0f);
-//        circularProgress.draw(UIStage.getBatch(),0.5f);
-//        UIStage.getBatch().draw(circularCoverTexture,640-60,50);
-        progressActor.drawProgress(UIStage.getBatch(), 1, 400, 80, 1, 1);
-//        progress.draw(Gdx.graphics.getDeltaTime()/5);
         UIStage.getBatch().end();
     }
 

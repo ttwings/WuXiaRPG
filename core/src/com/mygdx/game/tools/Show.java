@@ -1,11 +1,18 @@
 package com.mygdx.game.tools;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
+import com.badlogic.gdx.maps.tiled.renderers.BatchTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.game.actor.BaseActor;
@@ -201,112 +208,6 @@ public class Show {
         }
     }
 
-    public static void renderTileMap(Batch batch, TextureRegion[][] tileMap) {
-        int w, h, length;
-        length = 11;
-        w = tileMap[0].length;
-        h = tileMap.length;
-        for (int i = h - 1; i > -1; i--) {
-            for (int j = 0; j < w; ++j) {
-                if (tileMap[i][j] != null) {
-                    batch.draw(tileMap[i][j], (j - length) * 32 + 336, (i - length) * 32 + 336);
-                }
-            }
-        }
-    }
-
-    public static void renderTileMap(Batch batch, TextureRegion[][] tileMap, int dx, int dy) {
-        int w, h, length;
-        w = tileMap[0].length;
-        h = tileMap.length;
-        for (int i = h - 1; i > -1; i--) {
-            for (int j = 0; j < w; ++j) {
-                if (tileMap[i][j] != null) {
-                    batch.draw(tileMap[i][j], j * 32 + dx, i * 32 + dy);
-                }
-            }
-        }
-    }
-
-    public static TextureRegion[][] initTileMap(Map<String, Tile> tileMap, MapLocal map, int x0, int y0, int x1, int y1, int index) {
-        String tileStr = "";
-        int w, h;
-        w = x1 - x0 + 1;
-        h = y1 - y0 + 1;
-        TextureRegion[][] textureRegions;
-        textureRegions = new TextureRegion[h][w];
-        for (int i = 0; i < h; i++) {
-            for (int j = 0; j < w; j++) {
-                tileStr = map.datas[i + y0][j + x0].split(",")[index];
-                if (tileStr.equals("空气") || tileStr.equals("") || tileStr == null) {
-                    textureRegions[i][j] = null;
-                } else if (tileMap.containsKey(tileStr)) {
-                    textureRegions[i][j] = tileMap.get(tileStr).textureRegion;
-
-                } else {
-                    Gdx.app.debug(map.getClass().getName(), tileStr);
-                }
-            }
-        }
-        return textureRegions;
-    }
-
-    public static TextureRegion[][] actorsMap(Map<String, Tile> tileMap, Map<String, BaseActor> actorMap, int x0, int y0, int x1, int y1) {
-        int w, h, x, y, nx, ny;
-        w = x1 - x0 + 1;
-        h = y1 - y0 + 1;
-        TextureRegion[][] map;
-        map = new TextureRegion[h][w];
-        x = actorMap.get("主角").lx;
-        y = actorMap.get("主角").ly;
-        nx = actorMap.get("主角").lx;
-        ny = actorMap.get("主角").ly;
-        map[y1 - y][x1 - x] = tileMap.get(actorMap.get("主角").characterName).textureRegion;
-        //        map[y1 - y][x1 - x] = textureMap.loadTile(baseActor.characterName);
-        if ((ny - (y - 13)) >= 0 && (ny - (y - 13)) < h)
-            if ((nx - (x - 13)) >= 0 && (nx - (x - 13)) < w) {
-                map[ny - (y - 13)][nx - (x - 13)] = tileMap.get(actorMap.get("主角").characterName).textureRegion;
-                //                map[ny - (y - 13)][nx - (x - 13)] = textureMap.loadTile(npc1.characterName);
-
-            }
-        return map;
-    }
-
-    public static TextureRegion[][] actorsMap(Map<String, Tile> tileMap, Map<String, BaseActor> actorMap, String me) {
-        int w, h, x, y;
-        w = 16;
-        h = 16;
-        TextureRegion[][] map;
-        map = new TextureRegion[h][w];
-        Set set = actorNameSet(actorMap, me);
-        for (Iterator iter = set.iterator(); iter.hasNext(); ) {
-            String key = (String) iter.next();
-            BaseActor baseActor = actorMap.get(key);
-            x = baseActor.lx;
-            y = baseActor.ly;
-            map[y][x] = tileMap.get(baseActor.characterName).textureRegion;
-        }
-        return map;
-    }
-
-    public static Set<String> actorNameSet(Map<String, BaseActor> actorMap, String me) {
-        int x0, y0, x1, y1;
-        Set set = actorMap.keySet();
-        Set<String> nameSet = new HashSet<>();
-        for (Iterator iter = set.iterator(); iter.hasNext(); ) {
-            String key = (String) iter.next();
-            BaseActor baseActor = actorMap.get(key);
-            x1 = baseActor.rx;
-            y1 = baseActor.ry;
-            x0 = actorMap.get(me).rx;
-            y0 = actorMap.get(me).ry;
-            if (x0 == x1 && y0 == y1) {
-                nameSet.add(key);
-            }
-        }
-        return nameSet;
-    }
-
     public static void renderCall(Batch batch, Label label, BaseActor actor, float dur) {
         if (actor.call.length() == 0 || actor.call == null) {
 //			Gdx.app.debug("Call","");
@@ -323,11 +224,6 @@ public class Show {
 //			actor.call = "";
         }
     }
-
-    public static void renderFont(Batch batch, BitmapFont font, String str, int x, int y) {
-        font.draw(batch, str, x, y);
-    }
-
     public static void actorsName(Batch batch, Map<String, BaseActor> actorMap, BitmapFont font, int offx, int offy, String me) {
         int x, y, x0, y0, x1, y1;
         Set set = actorMap.keySet();
@@ -360,6 +256,7 @@ public class Show {
         for (int i = 0; i < h; i++) {
             for (int j = 0; j < w; j++) {
                 cell = layer.getCell(j, i);
+
                 if (cell != null) {
                     batch.draw(cell.getTile().getTextureRegion(), j * 32 + x, i * 32 + y);
                 }
@@ -367,10 +264,78 @@ public class Show {
         }
     }
 
+    public static void objLayer(Batch batch, TiledMap map, BaseActor actor, String layerName) {
+        if (map == null) {
+//			System.out.println("map is null");
+            return;
+        }
+        MapLayer layer = map.getLayers().get(layerName);
+        TiledMapTileMapObject tiledObject;
+        float tileX,tileY;
+        for (MapObject object : layer.getObjects()){
+             tiledObject = (TiledMapTileMapObject)object;
+            if (tiledObject.getName().equals("主角")){
+                tiledObject.setTextureRegion(actor.textureRegion);
+                tiledObject.setX(actor.getX());
+                tiledObject.setY(actor.getY());
+                tiledObject.setVisible(true);
+                batch.draw(actor.textureRegion,actor.getX(),actor.getY());
+            }
+            if (tiledObject.isVisible()){
+                tileX = tiledObject.getX();
+                tileY = tiledObject.getY();
+                batch.draw(tiledObject.getTextureRegion(),tileX,tileY);
+            }
+        }
+    }
+
+    public static String objName(TiledMap map,String layerName,BaseActor actor){
+        Vector2 actorV2;
+        actorV2  = new Vector2(actor.getX(),actor.getY());
+        float objV2x,objV2y,lenNear=0,len,maxLen = 64*64;
+        String objName = "";
+        if (map == null) {
+//			System.out.println("map is null");
+            return objName;
+        }
+        MapLayer layer = map.getLayers().get(layerName);
+//        MapObjects  objects = layer.getObjects();
+        TiledMapTileMapObject nearestObject = null;
+        TiledMapTileMapObject tiledObject = null;
+        for (MapObject object:layer.getObjects()) {
+            tiledObject = (TiledMapTileMapObject)object;
+            objV2x = tiledObject.getX();
+            objV2y = tiledObject.getY();
+//            objV2 = new Vector2(objV2x,objV2y);
+            len = actorV2.dst2(objV2x, objV2y);
+            if (len < maxLen) {
+                if (nearestObject != null) {
+                    objV2x = tiledObject.getX();
+                    objV2y = tiledObject.getY();
+                    lenNear = actorV2.dst(objV2x, objV2y);
+                    if (len < lenNear) {
+                        nearestObject = tiledObject;
+                    }
+                } else {
+                    nearestObject = tiledObject;
+                }
+            }
+        }
+        if (nearestObject!=null){
+            objName = nearestObject.getName();
+        }
+        return objName;
+
+    }
+
     public static void mapLayers(Batch batch, TiledMap map, int x, int y) {
         mapLayer(batch, map, x, y, "floor");
         mapLayer(batch, map, x, y, "wall");
         mapLayer(batch, map, x, y, "obj");
+    }
+    public static void objLayers(Batch batch,TiledMap map,BaseActor actor){
+        objLayer(batch,map,actor,"objs");
+
     }
 
     public static void faceTexture(Batch batch, String faceName, int x, int y) {

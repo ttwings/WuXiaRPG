@@ -1,9 +1,15 @@
 package com.mygdx.game.actor;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.mygdx.game.manager.Cache;
 import com.mygdx.game.manager.EnumAction;
+import com.mygdx.game.map.MapLocal;
+
 /**
- * Created by Administrator on 2016/11/18.
+ * Created by ttwings on 2016/11/18.
  */
 public class BaseActor extends Image{
 	/**
@@ -83,6 +89,8 @@ public class BaseActor extends Image{
 	public String[] skills;
 	public String[] items;
 	public TableData tableDate;
+	public TextureRegion textureRegion;
+	public String objName;
 
 	public BaseActor() {
 		name = ""; // 名字
@@ -134,6 +142,7 @@ public class BaseActor extends Image{
 		call = "";
 		isCall = false;
 		busy = 0;
+		objName = "";
 	}
 
 	public BaseActor(String[] datas){
@@ -286,4 +295,7 @@ public class BaseActor extends Image{
 		actionStr = actions[actionIndex];
 		updataBusy();
 	}
+//	public void updata(MapLocal mapLocal, SpriteBatch batch){
+//		batch.draw(this,getX(),getY());
+//	}
 }

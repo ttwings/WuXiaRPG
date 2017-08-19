@@ -1,6 +1,10 @@
 package com.mygdx.game.map;
 
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.actor.BaseActor;
 import com.mygdx.game.manager.ReadData;
@@ -68,7 +72,7 @@ public class MapLocal {
 		this.datas = null;
 	}
 
-	public MapLocal(int w, int h) {
+	public MapLocal(TiledMap tiledMap) {
 		this.posRegion = new Vector2(0, 0);
 		this.posWorld = new Vector2(0, 0);
 		this.w = w;
@@ -80,6 +84,7 @@ public class MapLocal {
 		this.wind2D = new Vector2(0, 0);
 		this.level = new int[h][w];
 		this.datas = new String[h][w];
+		this.tiledMap = tiledMap;
 	}
 	public void readMatData(String file,int x,int y,int w,int h){
 		String[][] matDatas = ReadData.readStrMat(file);
@@ -107,7 +112,20 @@ public class MapLocal {
 	public void setTiledMap(TiledMap map){
 		this.tiledMap = map;
 	}
+	public TiledMap getTiledMap(){
+		return this.tiledMap;
+	}
 	public void setName(String name){
 		this.name = name;
+	}
+	public void removeObj(String objLayerName,String objName){
+		MapLayer layer = tiledMap.getLayers().get(objLayerName);
+		TiledMapTileMapObject tiledObject = null;
+		for (MapObject object:layer.getObjects()) {
+			tiledObject = (TiledMapTileMapObject) object;
+			if (tiledObject.getName().equals(objName)) {
+				layer.getObjects().remove(object);
+			}
+		}
 	}
 }
