@@ -146,7 +146,7 @@ public class StageMap extends Stage {
 
 //        战斗动画测试
         frames = TextureRegion.split(Cache.instance().character(people.get("行走图")), 32, 48);
-        renderer = new OrthogonalTiledMapRenderer(tiledMap);
+        renderer = new OrthogonalTiledMapRenderer(tiledMap,getBatch());
     }
     void showRoomMsg(String roomName){
         if (roomName.length()>1){
@@ -344,14 +344,29 @@ public class StageMap extends Stage {
     public void draw() {
         super.draw();
         renderer.setView((OrthographicCamera) getCamera());
-        renderer.render();
-//        renderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get("floor"));
+//        renderer.render();
+        renderer.getBatch().begin();
+        renderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get("floor"));
+        renderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get("wall"));
+        renderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get("obj"));
+//        renderer.renderObjects(tiledMap.getLayers().get("objs"));
+
+        renderer.getBatch().end();
         baseActor.objName = Show.objName(tiledMap,"objs",baseActor);
+//                getBatch().draw(animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn), baseActor.getX(), baseActor.getY());
+
+        getBatch().begin();
+        Show.objLayers(getBatch(),tiledMap,baseActor);
+        getBatch().draw(animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn), baseActor.getX(), baseActor.getY());
+        getBatch().end();
+        renderer.getBatch().begin();
+        renderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get("cover"));
+        renderer.getBatch().end();
         getBatch().begin();
         baseActor.textureRegion = animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn);
         dur = animationManager.dur;
         //        Show.mapLayers(getBatch(), tiledMap, 0, 0);
-        Show.objLayers(getBatch(),tiledMap,baseActor);
+
 
         Show.actorsName(getBatch(), actors, font, 0, 70, me);
 //        Show.renderFont(getBatch(),dmgFont,"伤害",(int)baseActor.getX(),(int)baseActor.getY()+68);

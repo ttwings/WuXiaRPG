@@ -1,6 +1,5 @@
 package com.mygdx.game.action;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.mygdx.game.actor.BaseActor;
 import com.mygdx.game.manager.EnumAction;
 import com.mygdx.game.map.MapLocal;
@@ -42,20 +41,16 @@ public class ActionMove implements GamepadKey {
     public void passA(MapLocal mapLocal, BaseActor actor) {
 //  直接获得物品
 //  1、判断地图中物品对象与actor的距离 2、显示最近的物品的名称 3、按键时判断背包大小获取物品
-        StageMap.getInstance().addMsg("得到："+actor.objName);
         for (int i=0;i<10;i++){
-            if (actor.items[i].length()<2){
+            if (actor.items[i].length()<2 && actor.objName.length()>0){
                 actor.items[i] = actor.objName;
                 mapLocal.removeObj("objs",actor.objName);
+                StageMap.getInstance().addMsg("得到："+actor.objName);
                 break;
             }else if (i==10){
                 StageMap.getInstance().addMsg("包满了，装不下了");
             }
-
         }
-
-
-
     }
     @Override
     public void passB(MapLocal mapLocal, BaseActor actor) {

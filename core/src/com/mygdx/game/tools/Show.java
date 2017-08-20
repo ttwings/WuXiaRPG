@@ -274,13 +274,6 @@ public class Show {
         float tileX,tileY;
         for (MapObject object : layer.getObjects()){
              tiledObject = (TiledMapTileMapObject)object;
-            if (tiledObject.getName().equals("主角")){
-                tiledObject.setTextureRegion(actor.textureRegion);
-                tiledObject.setX(actor.getX());
-                tiledObject.setY(actor.getY());
-                tiledObject.setVisible(true);
-                batch.draw(actor.textureRegion,actor.getX(),actor.getY());
-            }
             if (tiledObject.isVisible()){
                 tileX = tiledObject.getX();
                 tileY = tiledObject.getY();
