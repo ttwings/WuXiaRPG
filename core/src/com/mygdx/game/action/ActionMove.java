@@ -57,6 +57,8 @@ public class ActionMove implements GamepadKey {
     }
     @Override
     public void passX(MapLocal mapLocal, BaseActor actor) {
+//        互动测试
+
     }
     @Override
     public void passY(MapLocal mapLocal, BaseActor actor) {

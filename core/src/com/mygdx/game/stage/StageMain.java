@@ -1,6 +1,7 @@
 package com.mygdx.game.stage;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -23,6 +24,7 @@ public class StageMain extends Stage {
     }
     LazyBitmapFont font,mainFont;
     FontManager fontManager = FontManager.getInstance();
+    Texture background = null;
     private void init(){
         w = Constants.VIEWPORT_WIDTH;
         h = Constants.VIEWPORT_HEIGHT;
@@ -35,13 +37,15 @@ public class StageMain extends Stage {
             tempStr += mainMenu[i];
         }
         font = fontManager.fontL;
-        mainFont = font;
+        mainFont = fontManager.fontL64;
+        background = Cache.instance().backgound("Background00023.jpg");
     }
     @Override
     public void draw() {
         stateTime = stateTime + 0.16f;
         getBatch().begin();
-        mainFont.draw(getBatch(),"武侠与江湖",w/2-150,h/2+200);
+        getBatch().draw(background,0,0,w,h);
+        mainFont.draw(getBatch(),"[BLACK]武侠与江湖",w/2-150,h/2+200);
         drawIndex();
         getBatch().end();
         super.draw();
@@ -51,7 +55,7 @@ public class StageMain extends Stage {
             if (i==index){
                 font.draw(getBatch(),"[RED]"+mainMenu[i],w / 2 - 64, h - i * 32 - 300);
             }else {
-                font.draw(getBatch(),mainMenu[i],w / 2 - 64, h - i * 32 - 300);
+                font.draw(getBatch(),"[BLACK]"+mainMenu[i],w / 2 - 64, h - i * 32 - 300);
             }
         }
     }

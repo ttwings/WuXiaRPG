@@ -22,20 +22,8 @@ public class StageRegionMap extends Stage{
 //    BitmapFont font;
     int x0,y0;
     int w,h;
-    public StageRegionMap(String mapFile){
-        cache.initTileMap();
-        mapRegion.readRegionMap(mapFile);
-//        mapRegion = MapManager.getInstance().mapRegion;
-//        font = FontManager.getInstance().getFont();
-//        Gdx.app.debug("",mapRegion.floorMat[0][0]);
-//        regionTextureMat = initTileMap(x0-13,y0-13,x0+13,y0+20);
-        w = mapRegion.w;
-        h = mapRegion.h;
-        regionTextureMat0 = initTileMap(0,0,w-1,h-1,0);
-        regionTextureMat1 = initTileMap(0,0,w-1,h-1,1);
-    }
+
     void init(){
-        cache.initTileMap();
 //        mapRegion = MapManager.getInstance().mapRegion;
 //        font = FontManager.getInstance().getFont();
 //        Gdx.app.debug("",mapRegion.floorMat[0][0]);

@@ -19,14 +19,17 @@ public class FontManager {
     public LazyBitmapFont fontL;
     public LazyBitmapFont fontL24;
     public LazyBitmapFont fontL28;
+    public LazyBitmapFont fontL64;
 
     void init() {
         fontL  = new LazyBitmapFont(generator,18);
         fontL24 = new LazyBitmapFont(generator,24);
         fontL28 = new LazyBitmapFont(generator,28);
+        fontL64 = new LazyBitmapFont(generator,64);
         fontL.getData().markupEnabled = true;
         fontL24.getData().markupEnabled = true;
         fontL28.getData().markupEnabled = true;
+        fontL64.getData().markupEnabled = true;
     }
     public void dispose() {
         fontL.dispose();
