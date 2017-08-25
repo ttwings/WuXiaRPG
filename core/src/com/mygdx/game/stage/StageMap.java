@@ -115,7 +115,7 @@ public class StageMap extends Stage {
         loadData();
         UIStage.setViewport(getViewport());
         mapLocal = new MapLocal();
-        tiledMapName.put("襄阳.武馆", tmxMapLoader.load("tileMaps/wuguan-keting.tmx"));
+        tiledMapName.put("襄阳.武馆", tmxMapLoader.load("tileMaps/wuguan.tmx"));
         mapLocal.setName("襄阳.武馆");
         mapLocal.setTiledMap(tiledMapName.get("襄阳.武馆"));
         tiledMap = mapLocal.getTiledMap();
@@ -163,12 +163,8 @@ public class StageMap extends Stage {
         foods  = ReadData.tableDateMap("Data/Foods.txt");
         rooms  = ReadData.tableDateMap("Data/Rooms.txt");
         objs = ReadData.tableDateMap("Data/Objs.txt");
-
-//        tile 图块基本信息数据 名字 对应  图片纹理
-        tileMap = ReadData.tileMap("Data/Tiles.txt");
 //        菜单设计矩阵，用于简单的设计菜单布局
         menuWin = ReadData.readStrMatSwapY("Data/mapStageWin.txt");
-
         regionMap = ReadData.readStrMatSwapY("Data/mapWuGuanMat.txt");
 //       地图信息，后期的路径规划，也需要在这里实现。
         roomMap = ReadData.roomMap("Data/Rooms.txt");
