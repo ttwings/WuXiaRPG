@@ -256,18 +256,13 @@ public static Map<String,TableData> tableDateMap(String fileName){
     public static String[] miniRole(String name) {
         return nameMap("data/MiniRoles.txt").get(name);
     }
-    public static String[] tile(String name) {
-        return nameMap("data/Tiles.txt").get(name);
-    }
+
 
     public static String data(String fileName, String name, String colName) {
         return data(fileName, name)[getIndex(name, colName)];
     }
     public static String actor(String name, String colName) {
         return actor(name)[getIndex("data/Actors.txt", colName)];
-    }
-    public static String tile(String name, String colName) {
-        return tile(name)[getIndex("data/Tiles.txt", colName)];
     }
 
     public static String skillAnimation(String name, String colName) {

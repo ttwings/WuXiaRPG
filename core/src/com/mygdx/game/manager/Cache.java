@@ -89,31 +89,6 @@ public class Cache {
    void init(){
 //        initTileMap();
    }
-//
-    public void initTileMap(){
-        tileMap = ReadData.tileMap("Data/Tiles.txt");
-    }
-
-
-    TextureRegion getTileFromData(String s){
-        String tileSetStr,tileStr,sizeStr,posStr,offStr;
-        String[] dataStr = ReadData.tile(s);
-        int x,y,offX,offY,w,h;
-        TextureRegion tempRegion,tile;
-        Texture tileSet;
-//      0	1	2	3	4	5	6	7	8
-//      ID	图块名	图集名	宽	高	X坐标	Y坐标	X偏移	Y偏移
-        tileSetStr = dataStr[2];
-        w = Integer.parseInt(dataStr[3]);
-        h = Integer.parseInt(dataStr[4]);
-        x = Integer.parseInt(dataStr[5]);
-        y = Integer.parseInt(dataStr[6]);
-        offX = Integer.parseInt(dataStr[7]);
-        offY = Integer.parseInt(dataStr[8]);
-        tileSet = tileset(tileSetStr);
-        tile = new TextureRegion(tileSet,x,y,w,h);
-        return tile;
-    }
     /*
      * 从文件载入纹理
      * @param filename1

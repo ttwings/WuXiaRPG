@@ -76,6 +76,8 @@ public class StageMap extends Stage {
     String[][] messageWin = new String[25][9];
     String[][] skillWin = new String[4][40];
     String[][] buffWin = new String[2][20];
+//    动作窗口，场景内可以执行的动作。
+    String roomActionMsg = "";
 //    信息列表
     ArrayList<String> battleMsg = new ArrayList<>();
     ArrayList<String> nomalMsg = new ArrayList<>();
@@ -151,8 +153,10 @@ public class StageMap extends Stage {
     void showRoomMsg(String roomName){
         if (roomName.length()>1){
             roomMsg = rooms.get(roomName).get("描述");
+            roomActionMsg = rooms.get(roomName).get("可执行动作");
         }else {
             roomMsg = "";
+            roomActionMsg = "";
         }
     }
 //数据载入
@@ -268,7 +272,6 @@ public class StageMap extends Stage {
             StageManager.getInstance().currentStage = new StageItem(baseActor);
         }
         if (keycode == Input.Keys.M) {
-            StageManager.getInstance().currentStage = new StageRegionMap("Data/RegionFloorMat1.txt");
         } else if (keycode == Input.Keys.SPACE) {
             StageManager.getInstance().currentStage = new StageFontMap("maps/wuguan.txt");
         } else if (keycode == Input.Keys.Z) {
@@ -388,6 +391,7 @@ public class StageMap extends Stage {
         Show.renderWin(UIStage.getBatch(), font, skillWin, 20, 20);
         Show.renderWin(UIStage.getBatch(), font, buffWin, 500, 760);
         Show.renderStrs(UIStage.getBatch(), font, strings, 10, 560, 20);
+        Show.renderStr(UIStage.getBatch(),font,roomActionMsg,500,740);
         Show.faceTexture(UIStage.getBatch(), baseActor.faceName, 18, 700);
         Show.showFps(UIStage.getBatch(), font, fps, 10, 760);
         UIStage.getBatch().end();

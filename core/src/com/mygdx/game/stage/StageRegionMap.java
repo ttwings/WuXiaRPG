@@ -36,7 +36,6 @@ public class StageRegionMap extends Stage{
     }
     void init(){
         cache.initTileMap();
-        mapRegion.readRegionMap("Data/RegionFloorMat1.txt");
 //        mapRegion = MapManager.getInstance().mapRegion;
 //        font = FontManager.getInstance().getFont();
 //        Gdx.app.debug("",mapRegion.floorMat[0][0]);

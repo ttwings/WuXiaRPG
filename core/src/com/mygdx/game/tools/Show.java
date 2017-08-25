@@ -207,6 +207,10 @@ public class Show {
             }
         }
     }
+//    输出字符
+    public static void renderStr(Batch batch,BitmapFont font,String s,int x,int y){
+        font.draw(batch,s,x,y);
+    }
 
     public static void renderCall(Batch batch, Label label, BaseActor actor, float dur) {
         if (actor.call.length() == 0 || actor.call == null) {
