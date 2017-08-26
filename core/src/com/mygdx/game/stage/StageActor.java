@@ -21,11 +21,7 @@ public class StageActor extends Stage{
     Set<String> setName;
     Map<String,BaseActor> actorMap;
     int index;
-    public StageActor(String name){
-        actorMap = ReadData.actorMap("Data/Actors.txt");
-        setName = actorMap.keySet();
-        baseActor = actorMap.get(name);
-        init();
+    public StageActor(BaseActor baseActor){
         changeMat(baseActor);
     }
     void init(){
@@ -37,10 +33,10 @@ public class StageActor extends Stage{
         font = FontManager.getInstance().fontL;
     }
     void changeMat(BaseActor actor){
-        stageMat[37][0] = actor.nickname;
-        stageMat[37][1] = actor.name;
-        stageMat[37][2] = actor.country;
-        stageMat[37][3] = actor.sex;
+        stageMat[37][0] = actor.get("称号");
+        stageMat[37][1] = actor.get("名称");
+        stageMat[37][2] = actor.get("国家");
+        stageMat[37][3] = actor.get("性别");
         stageMat[37][4] = actor.LV+"";
 //        stageMat[37][5] = actor.nickname;
 

@@ -176,6 +176,22 @@ public class Show {
         }
         return s;
     }
+    public static String disChars(char c,int cd){
+        String s = "";
+        if (cd > 0){
+            for (int i=0;i<cd/5;i++){
+                s=s+c;
+            }
+        }
+        return s;
+    }
+
+    public static void renderCD(Batch batch,BitmapFont font,String cdName,char c,int cd,int x,int y){
+        String s = "[CYAN]"+cdName+":"+disChars(c,cd);
+        if (cd>0){
+            font.draw(batch,s,x,y);
+        }
+    }
 
     public static void showFps(Batch batch, BitmapFont font, int fps, int x, int y) {
         font.draw(batch, "[RED]" + fps + "", x, y);

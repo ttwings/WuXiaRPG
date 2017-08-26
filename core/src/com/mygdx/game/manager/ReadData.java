@@ -49,26 +49,26 @@ public class ReadData {
             }
             file.writeString(s,false);
     }
-    public static Map<String,BaseActor> loadActorFromFile(String filePath){
-        Json json = new Json();
-        FileHandle file = Gdx.files.local(filePath);
-        BaseActor actor;
-        String lineString;
-        Map<String,BaseActor> actorMap = new HashMap<>();
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file.file()))); // 读取的数据行
-            while ((lineString = br.readLine()) != null) {
-                actor = json.fromJson(BaseActor.class,lineString);
-                actorMap.put(actor.name,actor);
-            }
-            br.close();
-        } catch (Exception e){
-
-        } finally {
-
-        }
-        return actorMap;
-    }
+//    public static Map<String,BaseActor> loadActorFromFile(String filePath){
+//        Json json = new Json();
+//        FileHandle file = Gdx.files.local(filePath);
+//        BaseActor actor;
+//        String lineString;
+//        Map<String,BaseActor> actorMap = new HashMap<>();
+//        try {
+//            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file.file()))); // 读取的数据行
+//            while ((lineString = br.readLine()) != null) {
+//                actor = json.fromJson(BaseActor.class,lineString);
+//                actorMap.put(actor.name,actor);
+//            }
+//            br.close();
+//        } catch (Exception e){
+//
+//        } finally {
+//
+//        }
+//        return actorMap;
+//    }
 
     public static String[][] readStrMatSwapY(String filePath) {
         ArrayList<String> tempArray = readArrayFromFile(filePath);
@@ -138,25 +138,25 @@ public class ReadData {
         return map;
     }
     // actor map
-    public static Map<String,BaseActor> actorMap(String fileName){
-        Map<String, BaseActor> map = new HashMap<String, BaseActor>();
-        ArrayList<String> arrayList = readArrayFromFile(fileName);
-        String[] strings;
-        String s;
-        String name;
-        BaseActor actor;
-        if (arrayList.size() == 0) {
-//            Gdx.app.log("nameMap", "没有数据");
-        }
-        for (int i = 1; i < arrayList.size(); i++) {
-            s = arrayList.get(i);
-            strings = s.split("\t");
-            name = strings[1];
-            actor = new BaseActor(strings);
-            map.put(name,actor);
-        }
-        return map;
-    }
+//    public static Map<String,BaseActor> actorMap(String fileName){
+//        Map<String, BaseActor> map = new HashMap<String, BaseActor>();
+//        ArrayList<String> arrayList = readArrayFromFile(fileName);
+//        String[] strings;
+//        String s;
+//        String name;
+//        BaseActor actor;
+//        if (arrayList.size() == 0) {
+////            Gdx.app.log("nameMap", "没有数据");
+//        }
+//        for (int i = 1; i < arrayList.size(); i++) {
+//            s = arrayList.get(i);
+//            strings = s.split("\t");
+//            name = strings[1];
+//            actor = new BaseActor(strings);
+//            map.put(name,actor);
+//        }
+//        return map;
+//    }
 //
 public static Map<String,TableData> tableDateMap(String fileName){
         Map<String, TableData> map = new OrderedMap();

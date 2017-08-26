@@ -37,6 +37,7 @@ public class ActionAttack implements GamepadKey {
 	public void passA(MapLocal mapLocal, BaseActor actor) {
 		attack(mapLocal, actor);
 		actor.addAction(SkillActions.chongFeng(actor,320,0.5f));
+		actor.busy = 50;
 	}
 	@Override
 	public void passB(MapLocal mapLocal, BaseActor actor) {
@@ -46,7 +47,7 @@ public class ActionAttack implements GamepadKey {
 	@Override
 	public void passX(MapLocal mapLocal, BaseActor actor) {
 		recover(actor);
-		StageMap.getInstance().addBattleMsg(actor.name+"运气疗伤");
+		StageMap.getInstance().addBattleMsg(actor.get("名称")+"运气疗伤");
 	}
 	@Override
 	public void passY(MapLocal mapLocal, BaseActor actor) {
@@ -111,24 +112,24 @@ public class ActionAttack implements GamepadKey {
 		AnimationManager animationManager = AnimationManager.getInstance();
 //		判断出手速度
 		if(faster(actor1,actor2) && actor1.busy==0){
-			stageMap.addBattleMsg(actor1.name+"抢先出手");
+			stageMap.addBattleMsg(actor1.get("名称")+"抢先出手");
 //			stageMap.animation = animationManager.getAttackAni(attack1.animation);
 			stageMap.animation = animationManager.getAttackAni("Attack2.png");
 			attackD20(actor1,actor2);
 			if (actor2.HP>0){
-				stageMap.addBattleMsg(actor2.name+"反击");
+				stageMap.addBattleMsg(actor2.get("名称")+"反击");
 				stageMap.animation = animationManager.getAttackAni("lion.png");
 				attackD20(actor2,actor1);
 			}
 
 //			actor1.ap = 0;
 		}else{
-			stageMap.addBattleMsg(actor2.name+"先出手");
+			stageMap.addBattleMsg(actor2.get("名称")+"先出手");
 //			stageMap.animation = animationManager.getAttackAni(attack2.animation);
 			stageMap.animation = animationManager.getAttackAni("Attack3.png");
 			attackD20(actor2,actor1);
 			if (actor1.HP>0){
-				stageMap.addBattleMsg(actor1.name+"还击");
+				stageMap.addBattleMsg(actor1.get("名称")+"还击");
 				stageMap.animation = animationManager.getAttackAni("Attack5.png");
 				attackD20(actor1,actor2);
 			}
@@ -148,10 +149,10 @@ public class ActionAttack implements GamepadKey {
 		boolean over = false;
 		if(actor1.HP<=0){
 			over = true;
-			stageMap.addBattleMsg(actor1.name+"大侠请重新来过。");
+			stageMap.addBattleMsg(actor1.get("名称")+"大侠请重新来过。");
 		}else if(actor2.HP<=0){
 			over = true;
-			stageMap.addBattleMsg(actor2.name+"惨败");
+			stageMap.addBattleMsg(actor2.get("名称")+"惨败");
 		}
 		return over;
 	}
@@ -167,7 +168,7 @@ public class ActionAttack implements GamepadKey {
 		d2 = MathUtils.random(1,20);
 		f1 = (d1+actor1.LV/2+actor1.exDex);
 		f2 = (d2+actor2.LV/2+actor2.exDex);
-		String s = actor1.name + ":"+f1 + " VS "+actor2.name+":"+f2;
+		String s = actor1.get("名称") + ":"+f1 + " VS "+actor2.get("名称")+":"+f2;
 		StageMap.getInstance().addBattleMsg(s);
 		return f1>=f2;
 	}
@@ -242,15 +243,15 @@ public class ActionAttack implements GamepadKey {
 //		FontManager.getInstance().addCharacters(s);
 		actor1.busy+=5;
 		if(actor2.HP*10/actor2.maxHP==8){
-			stageMap.addBattleMsg(actor2.name + "身体晃动了一下。");
+			stageMap.addBattleMsg(actor2.get("名称") + "身体晃动了一下。");
 		}else if(actor2.HP*10/actor2.maxHP == 6){
-			stageMap.addBattleMsg(actor2.name+"面部有些扭曲。");
+			stageMap.addBattleMsg(actor2.get("名称")+"面部有些扭曲。");
 		}else if(actor2.HP*10/actor2.maxHP == 4){
-			stageMap.addBattleMsg(actor2.name+"嘴角流出血。");
+			stageMap.addBattleMsg(actor2.get("名称")+"嘴角流出血。");
 		}else if(actor2.HP*10/actor2.maxHP == 2){
-			stageMap.addBattleMsg(actor2.name+"已经站不稳了。");
+			stageMap.addBattleMsg(actor2.get("名称")+"已经站不稳了。");
 		}else if(actor2.HP<= 0){
-			stageMap.addBattleMsg(actor2.name+"倒下了");
+			stageMap.addBattleMsg(actor2.get("名称")+"倒下了");
 		}
 	}
 //	计算AC，防御，包括基础防御和内功防御，物品防御
@@ -272,7 +273,7 @@ public class ActionAttack implements GamepadKey {
 			isAttack = true;
 		} else {
 			isAttack = false;
-			StageMap.getInstance().addBattleMsg(actor2.name + "[BLUE]躲闪");
+			StageMap.getInstance().addBattleMsg(actor2.get("名称") + "[BLUE]躲闪");
 		}
 		return isAttack;
 	}
@@ -301,8 +302,8 @@ public class ActionAttack implements GamepadKey {
 	String attackStyle(String style, BaseActor actor1,BaseActor actor2){
 		String newStyle;
 		String[] bodys = new String[]{"左手腕","左胳膊","脖子","头部","腰部","左腿","小腿","左脚脚腕","右手腕","右胳膊","右腿","右脚脚腕",};
-		newStyle = style.replace("$N",actor1.name);
-		newStyle = newStyle.replace("$n",actor2.name);
+		newStyle = style.replace("$N",actor1.get("名称"));
+		newStyle = newStyle.replace("$n",actor2.get("名称"));
 		newStyle = newStyle.replace("$w",actor1.equips[0]);
 		newStyle = newStyle.replace("$l",bodys[MathUtils.random(bodys.length-1)]);
 		newStyle = newStyle.replace("「","[RED]「");

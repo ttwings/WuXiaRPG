@@ -1,6 +1,4 @@
 package com.mygdx.game.map;
-
-import com.badlogic.gdx.maps.tiled.TiledMap;
 /**
  * Created by Administrator on 2017/4/20.
  * 房间信息，地图划分为多个房间。不同的房间，放置不同的东西，比如厨房，有米饭可以吃，有茶水可以喝。
