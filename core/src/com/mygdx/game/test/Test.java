@@ -13,7 +13,7 @@ public class Test {
     public static void main(String[] args){
 
         String atcFormat = "%s使出%s,打在%s身上，造成%d点伤害";
-        attack = attackManager.getAttack("长拳");
+//        attack = attackManager.getAttack("长拳");
         String atcStr;
         atcStr = String.format(atcFormat,"乔峰",attack.name,"铁头",attack.dmg);
         System.out.println(atcStr);

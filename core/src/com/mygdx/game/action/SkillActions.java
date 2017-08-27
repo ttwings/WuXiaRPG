@@ -47,4 +47,9 @@ public class SkillActions {
 		v = v.add(faceTo(actor,target).x*32,faceTo(actor,target).y*32);
 		return v;
 	}
+	public static boolean inDistance(Vector2 v1,Vector2 v2,float distance){
+		float x = v1.x - v2.x;
+		float y = v1.y - v2.y;
+		return (x*x + y*y)<(distance*distance);
+	}
 }

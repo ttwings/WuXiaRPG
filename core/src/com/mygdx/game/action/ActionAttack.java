@@ -1,8 +1,11 @@
 package com.mygdx.game.action;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.mygdx.game.actor.BaseActor;
 import com.mygdx.game.manager.AnimationManager;
+import com.mygdx.game.manager.EnumAction;
 import com.mygdx.game.manager.ReadData;
 import com.mygdx.game.map.MapLocal;
 import com.mygdx.game.stage.StageMap;
@@ -23,21 +26,38 @@ public class ActionAttack implements GamepadKey {
 	}
 	@Override
 	public void passU(MapLocal mapLocal, BaseActor actor) {
+		if (!actor.isBusy()){
+			actor.faceTo = EnumAction.FACE_N;
+			actor.addAction(Actions.moveBy(0,32,2f));
+		}
 	}
 	@Override
 	public void passD(MapLocal mapLocal, BaseActor actor) {
+		if (!actor.isBusy()){
+			actor.faceTo = EnumAction.FACE_S;
+			actor.addAction(Actions.moveBy(0,-32,2f));
+		}
 	}
 	@Override
 	public void passL(MapLocal mapLocal, BaseActor actor) {
+		if (!actor.isBusy()){
+			actor.faceTo = EnumAction.FACE_W;
+			actor.addAction(Actions.moveBy(-32,0,2f));
+		}
 	}
 	@Override
 	public void passR(MapLocal mapLocal, BaseActor actor) {
+		if (!actor.isBusy()){
+			actor.faceTo = EnumAction.FACE_E;
+			actor.addAction(Actions.moveBy(32,0,2f));
+		}
 	}
 	@Override
 	public void passA(MapLocal mapLocal, BaseActor actor) {
-		attack(mapLocal, actor);
-		actor.addAction(SkillActions.chongFeng(actor,320,0.5f));
-		actor.busy = 50;
+		if (!actor.isBusy()){
+			attack(mapLocal, actor);
+			actor.busy = 50;
+		}
 	}
 	@Override
 	public void passB(MapLocal mapLocal, BaseActor actor) {
@@ -54,7 +74,7 @@ public class ActionAttack implements GamepadKey {
 	}
 	@Override
 	public void passL1(MapLocal mapLocal, BaseActor actor) {
-		actor.actionIndex++;
+		actor.put("行动状态","闲逛");
 	}
 	@Override
 	public void passL2(MapLocal mapLocal, BaseActor actor) {

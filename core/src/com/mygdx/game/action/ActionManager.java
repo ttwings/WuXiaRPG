@@ -15,71 +15,65 @@ public class ActionManager implements GamepadKey {
     public Map<String,GamepadKey> actionKeyMap = new HashMap<>();
     ActionMove actionMove = new ActionMove();
     ActionAttack actionAttack = new ActionAttack();
-    public String actionName = "";
     void init(){
-        actionKeyMap.put("",actionMove);
         actionKeyMap.put("移动",actionMove);
         actionKeyMap.put("闲逛",actionMove);
-        actionKeyMap.put("整理",actionMove);
-        actionKeyMap.put("制作",actionMove);
-        actionKeyMap.put("出招",actionAttack);
         actionKeyMap.put("战斗",actionAttack);
-        actionKeyMap.put("专长",actionAttack);
     }
     @Override
     public void passU(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passU(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passU(mapLocal,actor);
     }
     @Override
     public void passD(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passD(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passD(mapLocal,actor);
     }
     @Override
     public void passL(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passL(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passL(mapLocal,actor);
     }
     @Override
     public void passR(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passR(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passR(mapLocal,actor);
     }
     @Override
     public void passA(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passA(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passA(mapLocal,actor);
     }
     @Override
     public void passB(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passB(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passB(mapLocal,actor);
     }
     @Override
     public void passX(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passX(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passX(mapLocal,actor);
     }
     @Override
     public void passY(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passY(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passY(mapLocal,actor);
     }
     @Override
     public void passL1(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passL1(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passL1(mapLocal,actor);
     }
     @Override
     public void passL2(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passL2(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passL2(mapLocal,actor);
     }
     @Override
     public void passR1(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passR1(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passR1(mapLocal,actor);
     }
     @Override
     public void passR2(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passR2(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passR2(mapLocal,actor);
     }
     @Override
     public void passStart(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passStart(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passStart(mapLocal,actor);
     }
     @Override
     public void passBack(MapLocal mapLocal, BaseActor actor) {
-        actionKeyMap.get(actionName).passBack(mapLocal,actor);
+        actionKeyMap.get(actor.get("行动状态")).passBack(mapLocal,actor);
     }
 }

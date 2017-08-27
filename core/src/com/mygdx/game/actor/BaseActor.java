@@ -1,45 +1,24 @@
 package com.mygdx.game.actor;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.mygdx.game.manager.Cache;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.mygdx.game.action.ActorTextureComponent;
 import com.mygdx.game.manager.EnumAction;
-import com.mygdx.game.map.MapLocal;
-
 /**
  * Created by ttwings on 2016/11/18.
  */
-public class BaseActor extends Image {
+public class BaseActor extends Actor{
     /**
      * ID	姓名	称号	世家	国家	信仰	性别	门派	等级	历练	声望	行动点数	臂力	根骨	身法	悟性	五感	福缘	综合	气血	真气	角色图	行走图索引	头像	肖像索引	坐标x	坐标y	故事
      * 1	段誉	傻小子	大理皇子	大理	佛	男	大理皇族	1	0	0		10	14	14	16	12	16	82	100	100	角色1		Face00000.png		20	20	逃出家门的傻小子
      */
-//	public int ID;
-//	public String name; // 名字
-//	public String nickname; // 称号
-//	public String characterName; // 行走图文件名
-//	public int characterIndex; // 行走图索引
-//	public String faceName; // 肖像文件名
-//	public int faceIndex; // 肖像索引
-//	public String region; // 区域名
     public int rx, ry; // 区域坐标
     public int lx, ly; // 本地图坐标 0-128
-//    public String family; // 世家
-//    public String country; // 国家
-//    public String camp; // 阵营
-//    public String faith; // 信仰
-//    public String sex; // 性别
-//    public String className; // 师从 门派
-    // public int age; // 年龄
-    // public int h; // 身高
     public int exp; // 江湖历练
     public int reputation; // 声望
     public int speed; // 移动速度
     public int jump; // 跳跃高度
     public int ap; // 行动点数
-
     public int Str; // 臂力
     public int Con; // 根骨
     public int Dex; // 身法
@@ -53,13 +32,13 @@ public class BaseActor extends Image {
     public int baseHP; // 基本生命
     public int HP; // 气血
     public int MP; // 真气
+    public int AP;
+    public int maxAP;
     public int maxMP;
     public int DHP; // 生命骰
     public int maxHP; // 最大生命
     public int LV; // 等级
     public int actionInputIndex; // 输入中的战斗行动编号
-//    public String lastSkill; // 光标记忆用 : 技能
-//    public String story;
     public String actionStr;
     public EnumAction enumAction;
     public EnumAction faceTo;
@@ -91,11 +70,13 @@ public class BaseActor extends Image {
     public TableData tableDate;
     public TextureRegion textureRegion;
     public String objName;
-
+    public ActorTextureComponent actorTextureComponent;
     public BaseActor(TableData tableDate) {
 
 
         this.tableDate = tableDate;
+        actorTextureComponent = new ActorTextureComponent(this);
+        actorTextureComponent.init();
         // age= 0; // 年龄
         // h= 0; // 身高
         exp = 0; // 经验
@@ -122,8 +103,10 @@ public class BaseActor extends Image {
         baseHP = 10; // 基本生命
         maxHP = Integer.parseInt(tableDate.get("气血")); // 最大生命
         maxMP = Integer.parseInt(tableDate.get("真气"));
+        maxAP = Integer.parseInt(tableDate.get("精力"));
         HP = maxHP; // 生命值
         MP = maxMP;// 内力值
+        AP = maxAP;
         DHP = 10; // 生命骰
 
         LV = 0; // 等级
@@ -221,6 +204,7 @@ public class BaseActor extends Image {
         }
         actionStr = actions[actionIndex];
         updataBusy();
+        actorTextureComponent.updata();
     }
 
     //	public void updata(MapLocal mapLocal, SpriteBatch batch){

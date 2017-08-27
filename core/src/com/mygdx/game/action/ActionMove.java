@@ -66,7 +66,9 @@ public class ActionMove implements GamepadKey {
     @Override
     public void passL1(MapLocal mapLocal, BaseActor actor) {
 //        actor.actionStr = "战斗";
-        actor.actionIndex++;
+//        actor.actionIndex++;
+        actor.put("行动状态","战斗");
+//        actor.actionStr = actor.get("行动状态");
     }
     @Override
     public void passL2(MapLocal mapLocal, BaseActor actor) {

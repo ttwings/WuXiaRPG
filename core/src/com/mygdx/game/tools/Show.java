@@ -228,22 +228,6 @@ public class Show {
         font.draw(batch,s,x,y);
     }
 
-    public static void renderCall(Batch batch, Label label, BaseActor actor, float dur) {
-        if (actor.call.length() == 0 || actor.call == null) {
-//			Gdx.app.debug("Call","");
-        } else {
-            label.setText(actor.call);
-//			label.draw(batch,actor.call,actor.getX(),actor.getY()+turn*4 + 70);
-            label.setX(actor.getX());
-            label.setY(actor.getY() + 70);
-            label.addAction(Actions.moveTo(actor.getX(), actor.getY() + 170, dur));
-//			label.addAction(Actions.moveBy());
-            label.draw(batch, 1f);
-//			Gdx.app.debug("Show",label.getY()+"");
-//			if (label.)
-//			actor.call = "";
-        }
-    }
     public static void actorsName(Batch batch, Map<String, BaseActor> actorMap, BitmapFont font, int offx, int offy, String me) {
         int x, y, x0, y0, x1, y1;
         Set set = actorMap.keySet();
@@ -353,6 +337,14 @@ public class Show {
 
     public static void faceTexture(Batch batch, String faceName, int x, int y) {
         batch.draw(Cache.instance().face(faceName), x, y);
+    }
+
+    public static void window(Batch batch,String windowName,int x,int y,int w,int h){
+        Texture system = Cache.instance().system(windowName);
+        TextureRegion background = new TextureRegion(system,64,64);
+        TextureRegion background1 = new TextureRegion(system,0,64,64,64);
+        TextureRegion board = new TextureRegion(system,64,0,64,64);
+        batch.draw(background1,x,y,w,h);
     }
 //
 }

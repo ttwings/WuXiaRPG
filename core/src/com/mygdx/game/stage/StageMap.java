@@ -48,6 +48,7 @@ public class StageMap extends Stage {
         return instance;
     }
     Stage UIStage = new Stage();
+    Stage itemStage = new Stage();
     int x;
     int y;
     String me = "段誉";
@@ -119,8 +120,6 @@ public class StageMap extends Stage {
         npc1.lx = 10;
         npc1.ly = 10;
         baseActor.actionStr = "移动";
-        actionManager.actionName = baseActor.actionStr;
-
         x = baseActor.lx;
         y = baseActor.ly;
         battleMsg = new ArrayList<>();
@@ -186,6 +185,7 @@ public class StageMap extends Stage {
         faceWin[3][10] = "精力";
         faceWin[5][12] = Show.disExp(Integer.parseInt(baseActor.get("气血")), baseActor.maxHP);
         faceWin[4][12] = Show.disExp(baseActor.MP, baseActor.maxMP);
+        faceWin[3][12] = Show.disExp(baseActor.AP,baseActor.maxAP);
         faceWin[5][18] = "X:"+String.valueOf(baseActor.get("坐标x"));
         faceWin[4][18] = "Y:"+String.valueOf(baseActor.get("坐标y"));
         faceWin[3][18] = "LX:"+String.valueOf(baseActor.lx);
@@ -232,36 +232,36 @@ public class StageMap extends Stage {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Constants.KEY_A) {
-            actionManager.actionKeyMap.get(baseActor.actionStr).passA(mapLocal, baseActor);
+            actionManager.actionKeyMap.get(baseActor.get("行动状态")).passA(mapLocal, baseActor);
             baseActor.put("坐标x",String.valueOf(Integer.parseInt(baseActor.get("坐标x"))+1));
         }
         if (keycode == Constants.KEY_B) {
-            actionManager.actionKeyMap.get(baseActor.actionStr).passB(mapLocal, baseActor);
+            actionManager.actionKeyMap.get(baseActor.get("行动状态")).passB(mapLocal, baseActor);
         }
         if (keycode == Constants.KEY_X) {
-            actionManager.actionKeyMap.get(baseActor.actionStr).passX(mapLocal, baseActor);
+            actionManager.actionKeyMap.get(baseActor.get("行动状态")).passX(mapLocal, baseActor);
         }
         if (keycode == Constants.KEY_Y) {
-            actionManager.actionKeyMap.get(baseActor.actionStr).passY(mapLocal, baseActor);
+            actionManager.actionKeyMap.get(baseActor.get("行动状态")).passY(mapLocal, baseActor);
         }
         if (keycode == Constants.KEY_R1) {
-            actionManager.actionKeyMap.get(baseActor.actionStr).passR1(mapLocal, baseActor);
+            actionManager.actionKeyMap.get(baseActor.get("行动状态")).passR1(mapLocal, baseActor);
         }
         if (keycode == Constants.KEY_R2) {
-            actionManager.actionKeyMap.get(baseActor.actionStr).passR2(mapLocal, baseActor);
+            actionManager.actionKeyMap.get(baseActor.get("行动状态")).passR2(mapLocal, baseActor);
         }
         if (keycode == Constants.KEY_L1) {
-            actionManager.actionKeyMap.get(baseActor.actionStr).passL1(mapLocal, baseActor);
+            actionManager.actionKeyMap.get(baseActor.get("行动状态")).passL1(mapLocal, baseActor);
         }
         if (keycode == Constants.KEY_L2) {
-            actionManager.actionKeyMap.get(baseActor.actionStr).passL2(mapLocal, baseActor);
+            actionManager.actionKeyMap.get(baseActor.get("行动状态")).passL2(mapLocal, baseActor);
         }
         if (keycode == Constants.KEY_START) {
-            actionManager.actionKeyMap.get(baseActor.actionStr).passStart(mapLocal, baseActor);
+            actionManager.actionKeyMap.get(baseActor.get("行动状态")).passStart(mapLocal, baseActor);
             loadData();
         }
         if (keycode == Constants.KEY_BACK) {
-            actionManager.actionKeyMap.get(baseActor.actionStr).passBack(mapLocal, baseActor);
+            actionManager.actionKeyMap.get(baseActor.get("行动状态")).passBack(mapLocal, baseActor);
         }
 
         if (keycode == Input.Keys.Q) {
@@ -332,6 +332,7 @@ public class StageMap extends Stage {
 
         fps = Gdx.graphics.getFramesPerSecond();
         baseActor.updata();
+        baseActor.act(Gdx.graphics.getDeltaTime());
         updataObjMsg();
         updataMenuWin();
         roomName = regionMap[(int)baseActor.getY()/128][(int)baseActor.getX()/128];
@@ -356,29 +357,21 @@ public class StageMap extends Stage {
 //                getBatch().draw(animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn), baseActor.getX(), baseActor.getY());
 
         getBatch().begin();
+//        绘制图块对象
         Show.objLayers(getBatch(),tiledMap,baseActor);
-        getBatch().draw(animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn), baseActor.getX(), baseActor.getY());
+        baseActor.actorTextureComponent.draw(getBatch());
         getBatch().end();
         renderer.getBatch().begin();
         renderer.renderTileLayer((TiledMapTileLayer) tiledMap.getLayers().get("cover"));
         renderer.getBatch().end();
         getBatch().begin();
-        baseActor.textureRegion = animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn);
+//        baseActor.textureRegion = animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn);
         dur = animationManager.dur;
-        //        Show.mapLayers(getBatch(), tiledMap, 0, 0);
-
-
-//        Show.actorsName(getBatch(), actors, font, 0, 70, me);
-//        Show.renderFont(getBatch(),dmgFont,"伤害",(int)baseActor.getX(),(int)baseActor.getY()+68);
         animationManager.updata();
 //        图片素材都是从左下角开始绘制，单个帧动画192*192大小，人物32*32大小。俩个的中心偏移量即 （192-32）/2 即 80 的偏移量
 //       同一时间，只有一个战斗动画。多个战斗动画，顺序播放
         getCamera().position.set(baseActor.getX(), baseActor.getY(), 0);
         renderAnimation(animation, (int) SkillActions.handPos(baseActor).x - 80, (int) SkillActions.handPos(baseActor).y - 80, animationManager.dur);
-
-//        getBatch().draw(animationManager.moveFrame(frames, baseActor.enumAction, baseActor.turn), baseActor.getX(), baseActor.getY());
-        Show.renderCall(getBatch(), label, baseActor, 2.0f);
-
         getBatch().end();
 //  UI 场景
         UIStage.getBatch().begin();
@@ -395,8 +388,16 @@ public class StageMap extends Stage {
         Show.renderStr(UIStage.getBatch(),font,roomName,500,760);
         Show.renderStr(UIStage.getBatch(),font,roomActionMsg,500,740);
 //        Show.renderStr(UIStage.getBatch(),font,Show.disHP(baseActor.busy,10),500,720);
+        Show.renderStr(UIStage.getBatch(),font,baseActor.get("行动状态"),460,720);
         Show.renderCD(UIStage.getBatch(),font,"忙碌中",'■',baseActor.busy,500,720);
         Show.faceTexture(UIStage.getBatch(), baseActor.get("头像"), 18, 700);
+//        Show.faceTexture(UIStage.getBatch(), baseActor.get("头像"), 100, 100);
+        if (baseActor.get("行动状态").equals("战斗")){
+
+            itemStage = new StageItem(baseActor);
+            itemStage.draw();
+            itemStage.act();
+        }
         Show.showFps(UIStage.getBatch(), font, fps, 10, 760);
         UIStage.getBatch().end();
     }

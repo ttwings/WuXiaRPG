@@ -9,6 +9,7 @@ import com.mygdx.game.manager.ReadData;
 import com.mygdx.game.stage.StageManager;
 import com.mygdx.game.stage.StageMap;
 import com.mygdx.game.tools.LazyBitmapFont;
+import com.mygdx.game.tools.Show;
 import groovy.lang.*;
 import org.omg.PortableInterceptor.INACTIVE;
 
@@ -37,7 +38,7 @@ public class StageItem extends Stage {
         x0 = 100;
         y0 = 100;
         stageMat = ReadData.readStrMatSwapY("Data/itemStage.txt");
-        changeMat(baseActor);
+//        changeMat(baseActor);
         font = FontManager.getInstance().fontL;
     }
 
@@ -54,7 +55,6 @@ public class StageItem extends Stage {
         stageMat[20][1] = actor.items[3];
         stageMat[19][1] = actor.items[4];
         stageMat[18][1] = actor.items[5];
-        stageMat[18][1] = "测试";
 
         stageMat[17][1] = actor.items[6];
         stageMat[16][1] = actor.items[7];
@@ -130,6 +130,7 @@ public class StageItem extends Stage {
     @Override
     public void draw() {
         getBatch().begin();
+        Show.window(getBatch(),"WindowOld.png",0,0,1280,800);
         renderStageMat();
         getBatch().end();
         super.draw();
