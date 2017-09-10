@@ -1,8 +1,9 @@
 package com.mygdx.game.actor;
-
+import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.action.ActorTextureComponent;
+import com.mygdx.game.action.ToolActions;
 import com.mygdx.game.manager.EnumAction;
 /**
  * Created by ttwings on 2016/11/18.
@@ -70,13 +71,17 @@ public class BaseActor extends Actor{
     public TableData tableDate;
     public TextureRegion textureRegion;
     public String objName;
+    public String handObj;
+    public int indexItem = 0;
     public ActorTextureComponent actorTextureComponent;
+    public State<BaseActor> actionState;
     public BaseActor(TableData tableDate) {
 
 
         this.tableDate = tableDate;
         actorTextureComponent = new ActorTextureComponent(this);
         actorTextureComponent.init();
+        actionState = ToolActions.砍柴;
         // age= 0; // 年龄
         // h= 0; // 身高
         exp = 0; // 经验
@@ -165,6 +170,7 @@ public class BaseActor extends Actor{
         skills[10] = tableDate.get("技能11");
         skills[11] = tableDate.get("技能12");
         actionStr = skills[0];
+        handObj = items[indexItem];
     }
     public void move(int x, int y) {
         setX(getX() + x * speed);
@@ -203,6 +209,7 @@ public class BaseActor extends Actor{
             actionIndex = actions.length - 1;
         }
         actionStr = actions[actionIndex];
+        handObj = items[indexItem];
         updataBusy();
         actorTextureComponent.updata();
     }
@@ -216,5 +223,11 @@ public class BaseActor extends Actor{
 
     public String get(String property) {
         return tableDate.get(property);
+    }
+    public void itemUp(){
+        indexItem = (indexItem>=11)?0:indexItem+1;
+    }
+    public void itemDown(){
+        indexItem = (indexItem<=0)?11:indexItem-1;
     }
 }

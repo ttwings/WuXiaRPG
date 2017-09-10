@@ -58,6 +58,9 @@ public class ActionMove implements GamepadKey {
     @Override
     public void passX(MapLocal mapLocal, BaseActor actor) {
 //        互动测试
+        if (actor.actionState == ToolActions.砍柴){
+            ToolActions.砍柴.enter(actor);
+        }
 
     }
     @Override
@@ -72,15 +75,16 @@ public class ActionMove implements GamepadKey {
     }
     @Override
     public void passL2(MapLocal mapLocal, BaseActor actor) {
-        actor.actionIndex--;
+        actor.itemUp();
+        System.out.print(actor.indexItem);
     }
     @Override
     public void passR1(MapLocal mapLocal, BaseActor actor) {
-//        调息
+        actor.actionIndex--;
     }
     @Override
     public void passR2(MapLocal mapLocal, BaseActor actor) {
-//        actor.actionStr = "制作";
+        actor.itemDown();
     }
     @Override
     public void passStart(MapLocal mapLocal, BaseActor actor) {

@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Json;
 import com.mygdx.game.action.Attack;
 import com.mygdx.game.action.SkillActions;
+import com.mygdx.game.action.ToolActions;
 import com.mygdx.game.actor.BaseActor;
 import com.mygdx.game.action.ActionManager;
 import com.mygdx.game.actor.TableData;
@@ -113,6 +114,10 @@ public class StageMap extends Stage {
         mapLocal.setTiledMap(tiledMapName.get("襄阳.武馆"));
         tiledMap = mapLocal.getTiledMap();
         baseActor = actors.get(me);
+        baseActor.lx = 20;
+        baseActor.ly = 220;
+//        baseActor.setX(baseActor.lx*32);
+//        baseActor.setY(baseActor.ly*32);
         npc1 = actors.get("段誉");
         baseActor.target = "段誉";
         npc1.target = me;
@@ -139,7 +144,11 @@ public class StageMap extends Stage {
     void showRoomMsg(String roomName){
         if (roomName.length()>1){
             roomMsg = rooms.get(roomName).get("描述");
-            roomActionMsg = rooms.get(roomName).get("可执行动作");
+            roomActionMsg = "[YELLOW]" + rooms.get(roomName).get("动作");
+            if (rooms.get(roomName).get("动作").equals("砍柴")){
+                baseActor.actionState= ToolActions.砍柴;
+//                System.out.print("砍柴");
+            }
         }else {
             roomMsg = "";
             roomActionMsg = "";
@@ -216,6 +225,7 @@ public class StageMap extends Stage {
 
     String[] strings;
 
+
     void renderAnimation(Animation animation, int x, int y, float dur) {
         if (animation != null && !animation.isAnimationFinished(dur)) {
             getBatch().draw((TextureRegion) animation.getKeyFrame(dur), x, y);
@@ -224,9 +234,9 @@ public class StageMap extends Stage {
     }
     void updataObjMsg(){
         if (objs.containsKey(baseActor.objName)){
-            objMsg = objs.get(baseActor.objName).get("描述");
+            objMsg = baseActor.objName + objs.get(baseActor.objName).get("描述");
         }else {
-            objMsg = "";
+            objMsg = baseActor.objName;
         }
     }
     @Override
@@ -329,7 +339,6 @@ public class StageMap extends Stage {
         calendar.opratorAdd(1);
         handleDebugInput();
         mapWin = Show.miniMap(regionMap, (int)baseActor.getX()/128, (int)baseActor.getY()/128, 5, 5);
-
         fps = Gdx.graphics.getFramesPerSecond();
         baseActor.updata();
         baseActor.act(Gdx.graphics.getDeltaTime());
@@ -337,6 +346,7 @@ public class StageMap extends Stage {
         updataMenuWin();
         roomName = regionMap[(int)baseActor.getY()/128][(int)baseActor.getX()/128];
         showRoomMsg(roomName);
+//        flyMsg = baseActor.get("思考");
 //        showRoomMsg(regionMap[(int)baseActor.getY()/128][(int)baseActor.getX()/128]);
     }
 
@@ -389,6 +399,7 @@ public class StageMap extends Stage {
         Show.renderStr(UIStage.getBatch(),font,roomActionMsg,500,740);
 //        Show.renderStr(UIStage.getBatch(),font,Show.disHP(baseActor.busy,10),500,720);
         Show.renderStr(UIStage.getBatch(),font,baseActor.get("行动状态"),460,720);
+        Show.renderStr(UIStage.getBatch(),font,baseActor.handObj+baseActor.indexItem,460,700);
         Show.renderCD(UIStage.getBatch(),font,"忙碌中",'■',baseActor.busy,500,720);
         Show.faceTexture(UIStage.getBatch(), baseActor.get("头像"), 18, 700);
 //        Show.faceTexture(UIStage.getBatch(), baseActor.get("头像"), 100, 100);
